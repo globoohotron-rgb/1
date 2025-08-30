@@ -31,3 +31,5 @@ Python ≥3.11 · пакети: `pandas`, `numpy`, `pyarrow` (див. [`requirem
 python 02_universe/build_universe.py
 python 03_factors_raw/build_factors.py
 python 14_testing_runbook/qc_all.py
+
+> Note: CI builds fixture data and runs ruff; PR must be green.
