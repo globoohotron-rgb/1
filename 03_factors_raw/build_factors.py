@@ -8,4 +8,6 @@ px['VOL_21']=g['ret'].rolling(21).std().reset_index(level=0,drop=True); px['MOM_
 f=px[px.date==d][['date','symbol','MOM_252x21','VOL_21','REV_1D','LIQ_ADV21']].set_index('symbol').reindex(u).reset_index()
 r=f['LIQ_ADV21'].rank(pct=True)-0.5; f['MOM_252x21']=f['MOM_252x21'].fillna(r*2); f['VOL_21']=f['VOL_21'].fillna(0.01+0.49*(r+0.5)); f['REV_1D']=f['REV_1D'].fillna(-0.04*r); f=f.fillna(f.median(numeric_only=True))
 ok=len(f)==len(u)==1000 and f.isna().sum().sum()==0 and f[['MOM_252x21','VOL_21','REV_1D','LIQ_ADV21']].var().min()>0; f.to_parquet(f'{B3}/{d}.parquet', index=False)
-open(f'{L}/factors_{d}.log','w').write(f'INFO N={len(f)} var_min={f.iloc[:,2:].var().min():.6g} status={'PASS' if ok else 'FAIL'}\n'); print('OK' if ok else 'FAIL')
+status = "PASS" if ok else "FAIL"
+open(f"{L}/factors_{d}.log","w").write(f"INFO N={len(f)} var_min={f.iloc[:,2:].var().min():.6g} status={status}\n"); print("OK" if ok else "FAIL")
+
