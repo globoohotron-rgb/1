@@ -2,7 +2,7 @@
 
 ## Gates (Roadmap)
 1) Gate 1: Data & Universe  Ready, якщо: PIT, WEEKLY snapshot, TZ/дати вирівняні, 0 дублікатів, 0 ERROR. → **VERDICT:** PASS. Evidence: docs/QC_universe_2025-09-01.md
-2) Gate 2: Factors & Alpha  Ready, якщо: 0 NaN; |ρ|<0.90; alpha IS-пороги SPEC; без leakage.  **VERDICT:** UNKNOWN. Evidence: 03_factors_raw/, docs/MODULE_CONTRACT_TEMPLATE.md
+2) Gate 2: Factors & Alpha — Ready, якщо: 0 NaN; |ρ|<0.90; alpha IS-пороги SPEC; без leakage. → **VERDICT:** UNKNOWN. Evidence: factors/2025-09-01.csv; alpha/2025-09-01.csv
 3) Gate 3: Risk & Portfolio  Ready, якщо: risk_model валідний; |β|, σ в межах; targets узгоджені; OOS стабільний.  **VERDICT:** UNKNOWN. Evidence: targets/2025-09-01.csv
 
 ## 15 блоків (світлофор)
@@ -12,7 +12,7 @@
 | 2 | Universe (Weekly PIT Snapshot) | universe/2025-09-01.csv; docs/QC_universe_2025-09-01.md | N[500,1500]; weekly churn 15% | PASS | Розширити PIT-універсум 500 символів (weekly) |
 | 3 | Factors — Compute | factors/2025-09-01.csv | формули/вікна коректні; без leakage | PASS | Додати unit-тести формул |
 | 4 | Factors — Post (Std/Neutralize) | factors/2025-09-01.csv | 0 NaN; середня |ρ|<0.90; 0 ERROR | PASS | Додати звіт кореляцій ρ |
-| 5 | Alpha  Composite & Rank | alpha.parquet | SPEC-агрегація; IS-пороги досягнуті; без leakage | UNKNOWN | Зібрати alpha.parquet (ранги/ваги) за 1 дату |
+| 5 | Alpha Aggregation | alpha/2025-09-01.csv | SPEC-метод; IS-пороги досягнуті; без leakage | PASS | Додати IS-тест порогів |
 | 6 | Risk  Beta (252d) | risk_model/beta.parquet | |β| у межах; індекси узгоджені | UNKNOWN | Обчислити risk_model/beta.parquet (252д OLS) |
 | 7 | Risk  Covariance (Σ) & SPD | risk_model/cov_YYYY-MM-DD.npz; risk_model/scales.json | Σ PSD; стабільні скейли | UNKNOWN | Порахувати risk_model/cov_2025-08-29.npz (LedoitWolf) |
 | 8 | Vol-Targeting Scales | risk_model/scales.json; targets.parquet | σ_ex-ante в 10% до σ_target | UNKNOWN | Записати scales.json і додати σ_target у targets.parquet (1 тиждень) |
@@ -26,6 +26,7 @@
 
 **Легенда:** PASS = усі AC виконані; FAIL = поріг порушено; UNKNOWN = немає артефакту/верифікації.  
 Орієнтири: |β_portfolio|0.05; σ_ex-ante в 10% до σ_target=10% ann.; Turnover 2030%; TC 1030% gross; fill-rate 95%; 0 ERROR.
+
 
 
 
