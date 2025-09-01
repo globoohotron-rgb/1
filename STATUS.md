@@ -18,7 +18,7 @@
 | 8 | Vol-Targeting Scales | risk_model/scales.json; targets.parquet | σ_ex-ante в 10% до σ_target | UNKNOWN | Записати scales.json і додати σ_target у targets.parquet (1 тиждень) |
 | 9 | Portfolio Construction (Q5/Q1 + Caps) | targets.parquet | капи/ліміти виконані; β_net0.05 | UNKNOWN | Згенерувати targets.parquet за 1 тиждень з β_net0.05 |
 | 10 | Turnover & Liquidity Controls | targets.parquet (post-caps) | Turnover 2030%; ADV-ліміти ок | UNKNOWN | Звести churn/ADV звіт за тиждень на основі targets.parquet |
-| 11 | Execution  Orders & Styles | orders_YYYY-MM-DD.parquet | 0 NaN/Inf; ADV-ліміти; 0 ERROR | UNKNOWN | Згенерувати orders_2025-08-29.parquet з ADV-капами |
+| 11 | Execution  Orders & Styles | orders/2025-09-01.csv; orders_YYYY-MM-DD.parquet | 0 NaN/Inf; ADV-ліміти; 0 ERROR | UNKNOWN | Згенерувати orders_2025-08-29.parquet з ADV-капами |
 | 12 | Trading Costs (TC)  Ex-ante / Ex-post | orders_{date}.parquet | TC 1030% gross; fill 95% | UNKNOWN | Додати TC-оцінку до orders_* (ex-ante) |
 | 13 | Monitoring & Reporting | performance.json | валідний JSON; дашборди згенеровані | UNKNOWN | Згенерувати performance.json (SR, IC, Vol, MDD) |
 | 14 | Testing & Runbook | тести; логи; чек-листи | 0 ERROR; наскрізний прогін 60 роб.днів | UNKNOWN | Запустити sanity E2E на 60 роб.днів і зберегти логи |
