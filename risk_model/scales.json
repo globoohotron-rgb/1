@@ -1,0 +1,6 @@
+﻿{
+  "as_of": "2025-09-01",
+  "sigma_target_ann": 0.10,
+  "assumption_ex_ante_sigma_ann": 0.10,
+  "note": "placeholder scales for Gate3 QC"
+}
