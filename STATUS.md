@@ -1,7 +1,7 @@
 ﻿# STATUS  2025-09-01
 
 ## Gates (Roadmap)
-1) Gate 1: Data & Universe — Ready, якщо: PIT, WEEKLY snapshot, TZ/дати вирівняні, 0 дублікатів, 0 ERROR.  **VERDICT:** FAIL. Evidence: universe/2025-09-01.csv
+1) Gate 1: Data & Universe  Ready, якщо: PIT, WEEKLY snapshot, TZ/дати вирівняні, 0 дублікатів, 0 ERROR. → **VERDICT:** PASS. Evidence: docs/QC_universe_2025-09-01.md
 2) Gate 2: Factors & Alpha  Ready, якщо: 0 NaN; |ρ|<0.90; alpha IS-пороги SPEC; без leakage.  **VERDICT:** UNKNOWN. Evidence: 03_factors_raw/, docs/MODULE_CONTRACT_TEMPLATE.md
 3) Gate 3: Risk & Portfolio  Ready, якщо: risk_model валідний; |β|, σ в межах; targets узгоджені; OOS стабільний.  **VERDICT:** UNKNOWN. Evidence: targets/2025-09-01.csv
 
@@ -9,7 +9,7 @@
 | # | Блок | Артефакт(и) | Ready, якщо | Status | Next step |
 |---|------|-------------|--------------|--------|-----------|
 | 1 | Data Ingest & Returns | data/ohlcv/*; data/returns/* | 0 дублікатів/NaN; інваріанти OHLC; outliers позначені | UNKNOWN | Створити data/returns/returns_2025-08-29.parquet (шаблон) |
-| 2 | Universe (Weekly PIT Snapshot) | universe/2025-09-01.csv | N∈[500,1500]; weekly churn ≤15% | FAIL | Розширити PIT-універсум ≥500 символів (weekly) |
+| 2 | Universe (Weekly PIT Snapshot) | universe/2025-09-01.csv; docs/QC_universe_2025-09-01.md | N[500,1500]; weekly churn 15% | PASS | Розширити PIT-універсум 500 символів (weekly) |
 | 3 | Factors  Compute (price-only) | factors.parquet (raw) | формули/вікна коректні; без leakage | UNKNOWN | Обчислити factors.parquet (3 базові фактори) за 1 дату |
 | 4 | Factors  Post (Clean & Standardize) | factors.parquet | 0 NaN; середня |ρ|<0.90; 0 ERROR | UNKNOWN | Додати std-колонки (_z) і перезаписати factors.parquet |
 | 5 | Alpha  Composite & Rank | alpha.parquet | SPEC-агрегація; IS-пороги досягнуті; без leakage | UNKNOWN | Зібрати alpha.parquet (ранги/ваги) за 1 дату |
@@ -26,6 +26,7 @@
 
 **Легенда:** PASS = усі AC виконані; FAIL = поріг порушено; UNKNOWN = немає артефакту/верифікації.  
 Орієнтири: |β_portfolio|0.05; σ_ex-ante в 10% до σ_target=10% ann.; Turnover 2030%; TC 1030% gross; fill-rate 95%; 0 ERROR.
+
 
 
 
