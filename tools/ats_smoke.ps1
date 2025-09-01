@@ -22,15 +22,31 @@ function Get-ColName($rows, [string[]]$cands) {
   foreach ($c in $cands) { if ($cols -contains $c) { return $c } }
   throw ("columns not found; tried: {0}" -f ($cands -join ", "))
 }
-function Parse-DoubleInv([string]$s) {
+
+function Parse-Weight([string]$s) {
   if ($null -eq $s -or $s -eq "") { return [double]::NaN }
-  return [double]::Parse($s, [System.Globalization.CultureInfo]::InvariantCulture)
+  $t = ($s -replace '\s','') -replace '%',''
+  # unify decimal separator -> '.'
+  $t = $t -replace ',', '.'
+  try {
+    $x = [double]::Parse($t, [System.Globalization.CultureInfo]::InvariantCulture)
+  } catch {
+    # last resort: current culture
+    $x = [double]::Parse($t)
+  }
+  if ([double]::IsNaN($x)) { return [double]::NaN }
+  # normalize percentages like 25 or 25% -> 0.25 (keep values already in 0..1)
+  if ($x -gt 1.0 + 1e-9) {
+    if ($x -le 100.0 + 1e-9) { $x = $x / 100.0 } else { throw ("weight too large: {0}" -f $x) }
+  }
+  return $x
 }
+
 function To-Map($rows, $symCol, $wCol) {
   $m = @{}
   foreach ($r in $rows) {
     $sym = [string]$r.$symCol
-    $w = Parse-DoubleInv $r.$wCol
+    $w = Parse-Weight ([string]$r.$wCol)
     if ([double]::IsNaN($w)) { throw ("NaN weight for {0}" -f $sym) }
     if ($w -lt 0) { throw ("negative weight for {0}: {1}" -f $sym, $w) }
     $m[$sym] = $w
