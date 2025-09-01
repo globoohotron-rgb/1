@@ -1,0 +1,75 @@
+# tools/ats_smoke.ps1
+$ErrorActionPreference = "Stop"
+
+# repo root
+$P    = Split-Path -Parent $MyInvocation.MyCommand.Path
+$ROOT = Split-Path -Parent $P
+$date = "2025-09-01"
+
+# 1) run ATS
+& "$ROOT\ats.cmd" run --date $date
+
+# 2) expected artifacts
+$tgt = Join-Path $ROOT ("targets\{0}.csv" -f $date)
+$ord = Join-Path $ROOT ("orders\{0}.csv" -f $date)
+$fil = Join-Path $ROOT ("execution\{0}.csv" -f $date)
+foreach ($p in @($tgt,$ord,$fil)) { if (-not (Test-Path $p)) { throw ("missing artifact: {0}" -f $p) } }
+
+# helpers
+function Get-ColName($rows, [string[]]$cands) {
+  if (-not $rows -or $rows.Count -eq 0) { throw "empty CSV" }
+  $cols = $rows[0].PSObject.Properties.Name
+  foreach ($c in $cands) { if ($cols -contains $c) { return $c } }
+  throw ("columns not found; tried: {0}" -f ($cands -join ", "))
+}
+function Parse-DoubleInv([string]$s) {
+  if ($null -eq $s -or $s -eq "") { return [double]::NaN }
+  return [double]::Parse($s, [System.Globalization.CultureInfo]::InvariantCulture)
+}
+function To-Map($rows, $symCol, $wCol) {
+  $m = @{}
+  foreach ($r in $rows) {
+    $sym = [string]$r.$symCol
+    $w = Parse-DoubleInv $r.$wCol
+    if ([double]::IsNaN($w)) { throw ("NaN weight for {0}" -f $sym) }
+    if ($w -lt 0) { throw ("negative weight for {0}: {1}" -f $sym, $w) }
+    $m[$sym] = $w
+  }
+  return $m
+}
+function Sum-Weights($map) { ($map.Values | Measure-Object -Sum).Sum }
+
+# 3) read CSVs
+$t = Import-Csv $tgt
+$o = Import-Csv $ord
+$f = Import-Csv $fil
+
+$tsym = Get-ColName $t @('asset','symbol','ticker','secid','id','isin','bbg')
+$ws   = Get-ColName $t @('weight')
+$osym = Get-ColName $o @('asset','symbol','ticker','secid','id','isin','bbg')
+$fsym = Get-ColName $f @('asset','symbol','ticker','secid','id','isin','bbg')
+$ow   = Get-ColName $o @('weight')
+$fw   = Get-ColName $f @('weight')
+
+$tm = To-Map $t $tsym $ws
+$om = To-Map $o $osym $ow
+$fm = To-Map $f $fsym $fw
+
+# 4) checks
+$sum = [double](Sum-Weights $tm)
+if ([math]::Abs($sum - 1.0) -gt 1e-8) { throw ("targets sum != 1 (sum={0})" -f $sum) }
+
+if ($tm.Count -ne $om.Count) { throw ("orders count != targets count ({0} vs {1})" -f $tm.Count, $om.Count) }
+foreach ($k in $tm.Keys) {
+  if (-not $om.ContainsKey($k)) { throw ("orders missing {0}" -f $k) }
+  if ([math]::Abs($tm[$k] - $om[$k]) -gt 1e-8) { throw ("orders weight mismatch {0}: t={1} o={2}" -f $k, $tm[$k], $om[$k]) }
+}
+
+if ($om.Count -ne $fm.Count) { throw ("fills count != orders count ({0} vs {1})" -f $om.Count, $fm.Count) }
+foreach ($k in $om.Keys) {
+  if (-not $fm.ContainsKey($k)) { throw ("fills missing {0}" -f $k) }
+  if ([math]::Abs($om[$k] - $fm[$k]) -gt 1e-8) { throw ("fills weight mismatch {0}: o={1} f={2}" -f $k, $om[$k], $fm[$k]) }
+}
+
+Write-Host ("TEST PASS: ats {0}" -f $date)
+exit 0
