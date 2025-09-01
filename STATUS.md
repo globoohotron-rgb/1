@@ -9,7 +9,7 @@
 | # | Блок | Артефакт(и) | Ready, якщо | Status | Next step |
 |---|------|-------------|--------------|--------|-----------|
 | 1 | Data Ingest & Returns | data/ohlcv/*; data/returns/* | 0 дублікатів/NaN; інваріанти OHLC; outliers позначені | UNKNOWN | Створити data/returns/returns_2025-08-29.parquet (шаблон) |
-| 2 | Universe (Weekly PIT Snapshot) | universe/YYYY-MM-DD.parquet | N[500,1500]; weekly churn 15% | UNKNOWN | Згенерувати universe/2025-08-29.parquet (перший WEEKLY snapshot) |
+| 2 | Universe (Weekly PIT Snapshot) | universe/2025-09-01.csv | N∈[500,1500]; weekly churn ≤15% | FAIL | Розширити PIT-універсум ≥500 символів (weekly) |
 | 3 | Factors  Compute (price-only) | factors.parquet (raw) | формули/вікна коректні; без leakage | UNKNOWN | Обчислити factors.parquet (3 базові фактори) за 1 дату |
 | 4 | Factors  Post (Clean & Standardize) | factors.parquet | 0 NaN; середня |ρ|<0.90; 0 ERROR | UNKNOWN | Додати std-колонки (_z) і перезаписати factors.parquet |
 | 5 | Alpha  Composite & Rank | alpha.parquet | SPEC-агрегація; IS-пороги досягнуті; без leakage | UNKNOWN | Зібрати alpha.parquet (ранги/ваги) за 1 дату |
@@ -26,3 +26,4 @@
 
 **Легенда:** PASS = усі AC виконані; FAIL = поріг порушено; UNKNOWN = немає артефакту/верифікації.  
 Орієнтири: |β_portfolio|0.05; σ_ex-ante в 10% до σ_target=10% ann.; Turnover 2030%; TC 1030% gross; fill-rate 95%; 0 ERROR.
+
