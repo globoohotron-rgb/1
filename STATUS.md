@@ -1,7 +1,7 @@
 ﻿# STATUS  2025-09-01
 
 ## Gates (Roadmap)
-1) Gate 1: Data & Universe  Ready, якщо: PIT, WEEKLY snapshot, TZ/дати вирівняні, 0 дублікатів, 0 ERROR.  **VERDICT:** UNKNOWN. Evidence: 02_universe/README.md, docs/SYNC_MISSING.md
+1) Gate 1: Data & Universe — Ready, якщо: PIT, WEEKLY snapshot, TZ/дати вирівняні, 0 дублікатів, 0 ERROR.  **VERDICT:** FAIL. Evidence: universe/2025-09-01.csv
 2) Gate 2: Factors & Alpha  Ready, якщо: 0 NaN; |ρ|<0.90; alpha IS-пороги SPEC; без leakage.  **VERDICT:** UNKNOWN. Evidence: 03_factors_raw/, docs/MODULE_CONTRACT_TEMPLATE.md
 3) Gate 3: Risk & Portfolio  Ready, якщо: risk_model валідний; |β|, σ в межах; targets узгоджені; OOS стабільний.  **VERDICT:** UNKNOWN. Evidence: targets/2025-09-01.csv
 
@@ -26,4 +26,5 @@
 
 **Легенда:** PASS = усі AC виконані; FAIL = поріг порушено; UNKNOWN = немає артефакту/верифікації.  
 Орієнтири: |β_portfolio|0.05; σ_ex-ante в 10% до σ_target=10% ann.; Turnover 2030%; TC 1030% gross; fill-rate 95%; 0 ERROR.
+
 
