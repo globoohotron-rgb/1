@@ -3,7 +3,7 @@
 ## Gates (Roadmap)
 1) Gate 1: Data & Universe  Ready, якщо: PIT, WEEKLY snapshot, TZ/дати вирівняні, 0 дублікатів, 0 ERROR.  **VERDICT:** UNKNOWN. Evidence: 02_universe/README.md, docs/SYNC_MISSING.md
 2) Gate 2: Factors & Alpha  Ready, якщо: 0 NaN; |ρ|<0.90; alpha IS-пороги SPEC; без leakage.  **VERDICT:** UNKNOWN. Evidence: 03_factors_raw/, docs/MODULE_CONTRACT_TEMPLATE.md
-3) Gate 3: Risk & Portfolio  Ready, якщо: risk_model валідний; |β|, σ в межах; targets узгоджені; OOS стабільний.  **VERDICT:** UNKNOWN. Evidence: 
+3) Gate 3: Risk & Portfolio  Ready, якщо: risk_model валідний; |β|, σ в межах; targets узгоджені; OOS стабільний.  **VERDICT:** UNKNOWN. Evidence: targets/2025-09-01.csv
 
 ## 15 блоків (світлофор)
 | # | Блок | Артефакт(и) | Ready, якщо | Status | Next step |
