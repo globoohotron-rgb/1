@@ -18,7 +18,7 @@ Canonical paths = flat, див. docs/REPO_STRUCTURE.md
 | 5 | Alpha Aggregation | alpha/2025-09-01.csv | SPEC-метод; IS-пороги досягнуті; без leakage | PASS | Додати IS-тест порогів |
 | 6 | Risk  Beta (252d) | risk_model/beta.parquet | |β| у межах; індекси узгоджені | UNKNOWN | Обчислити risk_model/beta.parquet (252д OLS) |
 | 7 | Risk  Covariance (Σ) & SPD | risk_model/cov_YYYY-MM-DD.npz; risk_model/scales.json | Σ PSD; стабільні скейли | UNKNOWN | Порахувати risk_model/cov_2025-08-29.npz (LedoitWolf) |
-| 8 | Vol Targeting | targets/2025-09-01.csv; tools/ats_run.ps1 | σ_ex-ante в 10% до σ_target | PASS | Підтягнути σ-оцінку до targets |
+| 8 | Vol Targeting | targets/2025-09-01.csv; tools/ats_run.ps1 | σ_ex-ante в ±10% до σ_target | PASS | Підтягнути σ-оцінку до targets |
 | 9 | Portfolio Construction (Q5/Q1 + Caps) | targets.parquet | капи/ліміти виконані; β_net0.05 | UNKNOWN | Згенерувати targets.parquet за 1 тиждень з β_net0.05 |
 | 10 | Turnover & Liquidity Controls | targets.parquet (post-caps) | Turnover 2030%; ADV-ліміти ок | UNKNOWN | Звести churn/ADV звіт за тиждень на основі targets.parquet |
 | 11 | Execution (Simulator) | orders/2025-09-01.csv; execution/fills_2025-09-01.csv; tools/ats_run.ps1 | 0 NaN/Inf; ADV-ліміти; 0 ERROR | PASS | Логувати fills щодня (cron) |
@@ -29,6 +29,7 @@ Canonical paths = flat, див. docs/REPO_STRUCTURE.md
 
 **Легенда:** PASS = усі AC виконані; FAIL = поріг порушено; UNKNOWN = немає артефакту/верифікації.  
 Орієнтири: |β_portfolio|0.05; σ_ex-ante в 10% до σ_target=10% ann.; Turnover 2030%; TC 1030% gross; fill-rate 95%; 0 ERROR.
+
 
 
 
