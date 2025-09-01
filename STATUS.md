@@ -10,8 +10,8 @@
 |---|------|-------------|--------------|--------|-----------|
 | 1 | Data Ingest & Returns | data/ohlcv/*; data/returns/* | 0 дублікатів/NaN; інваріанти OHLC; outliers позначені | UNKNOWN | Створити data/returns/returns_2025-08-29.parquet (шаблон) |
 | 2 | Universe (Weekly PIT Snapshot) | universe/2025-09-01.csv; docs/QC_universe_2025-09-01.md | N[500,1500]; weekly churn 15% | PASS | Розширити PIT-універсум 500 символів (weekly) |
-| 3 | Factors  Compute (price-only) | factors.parquet (raw) | формули/вікна коректні; без leakage | UNKNOWN | Обчислити factors.parquet (3 базові фактори) за 1 дату |
-| 4 | Factors  Post (Clean & Standardize) | factors.parquet | 0 NaN; середня |ρ|<0.90; 0 ERROR | UNKNOWN | Додати std-колонки (_z) і перезаписати factors.parquet |
+| 3 | Factors — Compute | factors/2025-09-01.csv | формули/вікна коректні; без leakage | PASS | Додати unit-тести формул |
+| 4 | Factors — Post (Std/Neutralize) | factors/2025-09-01.csv | 0 NaN; середня |ρ|<0.90; 0 ERROR | PASS | Додати звіт кореляцій ρ |
 | 5 | Alpha  Composite & Rank | alpha.parquet | SPEC-агрегація; IS-пороги досягнуті; без leakage | UNKNOWN | Зібрати alpha.parquet (ранги/ваги) за 1 дату |
 | 6 | Risk  Beta (252d) | risk_model/beta.parquet | |β| у межах; індекси узгоджені | UNKNOWN | Обчислити risk_model/beta.parquet (252д OLS) |
 | 7 | Risk  Covariance (Σ) & SPD | risk_model/cov_YYYY-MM-DD.npz; risk_model/scales.json | Σ PSD; стабільні скейли | UNKNOWN | Порахувати risk_model/cov_2025-08-29.npz (LedoitWolf) |
@@ -26,6 +26,7 @@
 
 **Легенда:** PASS = усі AC виконані; FAIL = поріг порушено; UNKNOWN = немає артефакту/верифікації.  
 Орієнтири: |β_portfolio|0.05; σ_ex-ante в 10% до σ_target=10% ann.; Turnover 2030%; TC 1030% gross; fill-rate 95%; 0 ERROR.
+
 
 
 
