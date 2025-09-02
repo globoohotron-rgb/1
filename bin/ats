@@ -215,17 +215,43 @@ def cmd_stats() -> int:
     print(f"Stats: {n} days; Cum={cum:.6f}; Vol={vol:.6f}; MDD={mdd:.6f}")
     return 0
 
+def cmd_summary() -> int:
+    try:
+        # 1) stats.json (або рахуємо зі свіжого equity.csv)
+        stats_path = ROOT / "performance" / "stats.json"
+        if stats_path.exists():
+            with stats_path.open(encoding='utf-8') as f:
+                s = json.load(f)
+        else:
+            n, cum, vol, mdd = _compute_stats()
+            s = {"days": n, "cum": cum, "vol": vol, "mdd": mdd}
+        # 2) останній рядок equity.csv
+        eq_path = ROOT / "performance" / "equity.csv"
+        rows = _read_csv(eq_path)
+        if not rows:
+            raise RuntimeError("performance/equity.csv is empty")
+        last = rows[-1]
+        d = last.get("date", "")
+        r = float(last.get("r", "0"))
+        e = float(last.get("equity", "1"))
+    except Exception as e:
+        print(f"ERR: {e}", file=sys.stderr); return 1
+    print(f"Summary: {int(s.get('days',0))} days; Cum={float(s.get('cum',0.0)):.6f}; Vol={float(s.get('vol',0.0)):.6f}; MDD={float(s.get('mdd',0.0)):.6f}; last={d} r={r:.6f} equity={e:.6f}")
+    return 0
+
 def main():
     p = argparse.ArgumentParser(prog='ats'); sub = p.add_subparsers(dest='cmd', required=True)
     p_r = sub.add_parser('run', help='produce targets/orders/execution (MVP)'); p_r.add_argument('--date', required=True)
     p_p = sub.add_parser('perf', help='compute daily gross return'); p_p.add_argument('--date', required=True)
     p_d = sub.add_parser('daily', help='run + perf + equity update'); p_d.add_argument('--date', required=True)
     sub.add_parser('stats', help='print Cum/Vol/MDD and save to performance/stats.json')
+    sub.add_parser('summary', help='print one-line summary from equity.csv + stats.json')
 
     a = p.parse_args()
     if a.cmd=='run': sys.exit(cmd_run(a.date))
     if a.cmd=='perf': sys.exit(cmd_perf(a.date))
     if a.cmd=='daily': sys.exit(cmd_daily(a.date))
     if a.cmd=='stats': sys.exit(cmd_stats())
+    if a.cmd=='summary': sys.exit(cmd_summary())
 
 if __name__ == '__main__': main()
