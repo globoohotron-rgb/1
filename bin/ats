@@ -236,7 +236,6 @@ def cmd_summary() -> int:
 
 def cmd_report(date_str: str) -> int:
     try:
-        # сформувати той самий рядок, що й summary
         stats_path = ROOT / "performance" / "stats.json"
         if stats_path.exists():
             with stats_path.open(encoding='utf-8') as f:
@@ -252,7 +251,6 @@ def cmd_report(date_str: str) -> int:
         r_last = float(last.get("r", "0"))
         e_last = float(last.get("equity", "1"))
         summary_line = f"Summary: {int(s.get('days',0))} days; Cum={float(s.get('cum',0.0)):.6f}; Vol={float(s.get('vol',0.0)):.6f}; MDD={float(s.get('mdd',0.0)):.6f}; last={d_last} r={r_last:.6f} equity={e_last:.6f}"
-        # сформувати Markdown
         out_path = ROOT / "docs" / f"report_{date_str}.md"
         out_path.parent.mkdir(parents=True, exist_ok=True)
         md = f"# Report {date_str}\n\n```\n{summary_line}\n```\n\n![Equity curve](docs/equity.png)\n"
@@ -260,6 +258,23 @@ def cmd_report(date_str: str) -> int:
     except Exception as e:
         print(f"ERR: {e}", file=sys.stderr); return 1
     print(f" Report {date_str} written"); return 0
+
+def cmd_backfill(date_from: str, date_to: str) -> int:
+    try:
+        d0 = datetime.strptime(date_from, '%Y-%m-%d').date()
+        d1 = datetime.strptime(date_to, '%Y-%m-%d').date()
+    except ValueError:
+        print("ERR: --from/--to must be YYYY-MM-DD", file=sys.stderr); return 2
+    if d0 > d1:
+        print("ERR: --from must be <= --to", file=sys.stderr); return 2
+    cur = d0
+    step = timedelta(days=1)
+    while cur <= d1:
+        rc = cmd_daily(cur.isoformat())
+        if rc != 0: return rc
+        cur += step
+    # останній рядок ' Daily <to>: ...' уже надруковано
+    return 0
 
 def main():
     p = argparse.ArgumentParser(prog='ats'); sub = p.add_subparsers(dest='cmd', required=True)
@@ -269,6 +284,9 @@ def main():
     sub.add_parser('stats', help='print Cum/Vol/MDD and save to performance/stats.json')
     sub.add_parser('summary', help='print one-line summary from equity.csv + stats.json')
     p_rep = sub.add_parser('report', help='write docs/report_<date>.md with summary + chart'); p_rep.add_argument('--date', required=True)
+    p_bf = sub.add_parser('backfill', help='run daily for each date in range (inclusive)')
+    p_bf.add_argument('--from', dest='date_from', required=True)
+    p_bf.add_argument('--to', dest='date_to', required=True)
 
     a = p.parse_args()
     if a.cmd=='run': sys.exit(cmd_run(a.date))
@@ -277,5 +295,6 @@ def main():
     if a.cmd=='stats': sys.exit(cmd_stats())
     if a.cmd=='summary': sys.exit(cmd_summary())
     if a.cmd=='report': sys.exit(cmd_report(a.date))
+    if a.cmd=='backfill': sys.exit(cmd_backfill(a.date_from, a.date_to))
 
 if __name__ == '__main__': main()
