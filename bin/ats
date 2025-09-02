@@ -1,5 +1,5 @@
 ﻿#!/usr/bin/env python3
-import argparse, csv, json, sys, re, subprocess
+import argparse, csv, json, sys, re
 from pathlib import Path
 from datetime import datetime, timedelta
 
@@ -57,6 +57,10 @@ def _pick_return_key(rows):
     return k or max(keys, key=lambda key: _numeric_score(rows, key))
 
 # ---------- perf core ----------
+def _float_str(x: float) -> str:
+    # так само, як json.dump, щоб r у CSV збігався з r у JSON (до 15 значущих)
+    return format(float(x), ".15g")
+
 def _perf_compute_and_write(date_str: str):
     d = datetime.strptime(date_str, '%Y-%m-%d').date()
     d1 = d + timedelta(days=1)
@@ -93,7 +97,7 @@ def _perf_compute_and_write(date_str: str):
             r = rmap.get(s)
             if r is None: continue
             gross += w * r
-        except: 
+        except:
             continue
 
     out = {'date': d.isoformat(), 'gross_return': gross}
@@ -103,6 +107,48 @@ def _perf_compute_and_write(date_str: str):
         json.dump(out, f, ensure_ascii=False, separators=(',', ':'))
     return gross
 
+# ---------- equity curve ----------
+def _update_equity_csv(date_str: str, r: float):
+    p = ROOT / "performance" / "equity.csv"
+    p.parent.mkdir(parents=True, exist_ok=True)
+
+    rows = []
+    if p.exists():
+        with p.open(newline='', encoding='utf-8') as f:
+            rdr = csv.DictReader(f)
+            rows = list(rdr)
+
+    # Визначаємо попередній equity і уникнемо дублікату на ту ж дату
+    prev_equity = 1.0
+    if rows:
+        last_date = rows[-1].get("date")
+        try:
+            last_eq = float(rows[-1].get("equity", "1"))
+        except:
+            last_eq = 1.0
+        if last_date == date_str:
+            # перезапис рядка дати D: попередній  з попереднього рядка, або 1.0 якщо його нема
+            if len(rows) >= 2:
+                try: prev_equity = float(rows[-2].get("equity", "1"))
+                except: prev_equity = 1.0
+                rows = rows[:-1]
+            else:
+                prev_equity = 1.0
+                rows = []
+        else:
+            prev_equity = last_eq
+
+    equity = prev_equity * (1.0 + float(r))
+
+    # Перезаписуємо файл із канонічним хедером
+    with p.open('w', newline='', encoding='utf-8') as f:
+        w = csv.writer(f)
+        w.writerow(["date","r","equity"])
+        for row in rows:
+            # нормалізуємо існуючі рядки до потрібних колонок (про всяк випадок)
+            w.writerow([row.get("date",""), row.get("r",""), row.get("equity","")])
+        w.writerow([date_str, _float_str(r), _float_str(equity)])
+
 # ---------- commands ----------
 def cmd_run(date_str: str) -> int:
     # мінімальний генератор артефактів "targets/orders/execution" на дату
@@ -110,7 +156,6 @@ def cmd_run(date_str: str) -> int:
     t_path = ROOT / "targets" / f"{d.isoformat()}.csv"
     if not t_path.exists():
         _ensure_placeholder_targets(t_path)
-    # дуже прості плейсхолдери для прийомки директорій
     _write_csv(ROOT / "orders" / f"{d.isoformat()}.csv",
                ["symbol","side","qty","px_ref","tc_est"], [["AAA",1,100,100.0,0.0001],["BBB",-1,100,50.0,0.0001]])
     _write_csv(ROOT / "execution" / f"{d.isoformat()}.csv",
@@ -128,16 +173,15 @@ def cmd_perf(date_str: str) -> int:
     return 0
 
 def cmd_daily(date_str: str) -> int:
-    # 1) run
+    # 1) run  2) perf  3) equity.csv  4) summary
     if cmd_run(date_str) != 0:
         return 1
-    # 2) perf
     try:
         gross = _perf_compute_and_write(date_str)
+        _update_equity_csv(date_str, gross)
     except Exception as e:
         print(f"ERR: {e}", file=sys.stderr)
         return 1
-    # 3) один рядок підсумку
     print(f" Daily {date_str}: weights OK; r={gross:.6f}")
     return 0
 
@@ -151,7 +195,7 @@ def main():
     p_perf = sub.add_parser('perf', help='compute daily gross return')
     p_perf.add_argument('--date', required=True, help='YYYY-MM-DD (targets date)')
 
-    p_daily = sub.add_parser('daily', help='run + perf summary')
+    p_daily = sub.add_parser('daily', help='run + perf + equity update')
     p_daily.add_argument('--date', required=True, help='YYYY-MM-DD')
 
     args = p.parse_args()
