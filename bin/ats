@@ -1,5 +1,5 @@
 ﻿#!/usr/bin/env python3
-import argparse, csv, json, sys, re, base64
+import argparse, csv, json, sys, re, base64, math
 from pathlib import Path
 from datetime import datetime, timedelta
 
@@ -21,7 +21,7 @@ def _ensure_placeholder_targets(p: Path):
 def _ensure_placeholder_returns(p: Path):
     _write_csv(p, ["symbol","r"], [["AAA",0.01],["BBB",-0.005]])
 
-# ---------- column picking (tolerant) ----------
+# ---------- tolerant column picking ----------
 _num = re.compile(r"^[\s+-]?\d+(\.\d+)?([eE][+-]?\d+)?\s*$")
 def _numeric_score(rows, key):
     ok = 0
@@ -51,6 +51,7 @@ def _pick_return_key(rows):
 
 # ---------- perf core ----------
 def _float_str(x: float) -> str: return format(float(x), ".15g")
+
 def _perf_compute_and_write(date_str: str):
     d = datetime.strptime(date_str, '%Y-%m-%d').date()
     d1 = d + timedelta(days=1)
@@ -112,7 +113,6 @@ def _update_equity_csv(date_str: str, r: float):
         w.writerow([date_str, _float_str(r), _float_str(equity)])
 
 def _write_placeholder_png(path: Path):
-    # 1x1 білий PNG
     b64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMB/6X5S8QAAAAASUVORK5CYII="
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(base64.b64decode(b64))
@@ -140,6 +140,47 @@ def _plot_equity_png():
         print(f"NOTE: matplotlib unavailable or failed ({e}); writing placeholder PNG", file=sys.stderr)
         _write_placeholder_png(png_path)
 
+# ---------- stats ----------
+def _compute_stats():
+    p = ROOT / "performance" / "equity.csv"
+    if not p.exists():
+        raise FileNotFoundError("performance/equity.csv not found")
+    rows = _read_csv(p)
+    if not rows:
+        raise RuntimeError("performance/equity.csv is empty")
+
+    # r та equity як числа
+    r_list, e_list = [], []
+    for row in rows:
+        try:
+            r_list.append(float(row.get("r", "0")))
+            e_list.append(float(row.get("equity", "1")))
+        except:
+            continue
+
+    n = len(e_list)
+    cum = (e_list[-1] - 1.0) if n else 0.0
+    # population stdev
+    if len(r_list) >= 2:
+        mu = sum(r_list) / len(r_list)
+        var = sum((x - mu) ** 2 for x in r_list) / len(r_list)
+        vol = math.sqrt(var)
+    else:
+        vol = 0.0
+    # max drawdown (relative, <= 0)
+    mdd, peak = 0.0, 1.0
+    for e in e_list:
+        if e > peak: peak = e
+        dd = (e / peak) - 1.0
+        if dd < mdd: mdd = dd
+
+    out = {"days": n, "cum": cum, "vol": vol, "mdd": mdd}
+    out_path = ROOT / "performance" / "stats.json"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with out_path.open('w', encoding='utf-8') as f:
+        json.dump(out, f, ensure_ascii=False, separators=(',', ':'))
+    return n, cum, vol, mdd
+
 # ---------- commands ----------
 def cmd_run(date_str: str) -> int:
     d = datetime.strptime(date_str, '%Y-%m-%d').date()
@@ -166,13 +207,25 @@ def cmd_daily(date_str: str) -> int:
         print(f"ERR: {e}", file=sys.stderr); return 1
     print(f" Daily {date_str}: weights OK; r={gross:.6f}"); return 0
 
+def cmd_stats() -> int:
+    try:
+        n, cum, vol, mdd = _compute_stats()
+    except Exception as e:
+        print(f"ERR: {e}", file=sys.stderr); return 1
+    print(f"Stats: {n} days; Cum={cum:.6f}; Vol={vol:.6f}; MDD={mdd:.6f}")
+    return 0
+
 def main():
     p = argparse.ArgumentParser(prog='ats'); sub = p.add_subparsers(dest='cmd', required=True)
     p_r = sub.add_parser('run', help='produce targets/orders/execution (MVP)'); p_r.add_argument('--date', required=True)
     p_p = sub.add_parser('perf', help='compute daily gross return'); p_p.add_argument('--date', required=True)
     p_d = sub.add_parser('daily', help='run + perf + equity update'); p_d.add_argument('--date', required=True)
+    sub.add_parser('stats', help='print Cum/Vol/MDD and save to performance/stats.json')
+
     a = p.parse_args()
     if a.cmd=='run': sys.exit(cmd_run(a.date))
     if a.cmd=='perf': sys.exit(cmd_perf(a.date))
     if a.cmd=='daily': sys.exit(cmd_daily(a.date))
+    if a.cmd=='stats': sys.exit(cmd_stats())
+
 if __name__ == '__main__': main()
