@@ -1,0 +1,96 @@
+﻿#!/usr/bin/env python3
+import argparse, csv, json, sys
+from pathlib import Path
+from datetime import datetime, timedelta
+
+def _guess(keys, candidates):
+    for c in candidates:
+        if c in keys: return c
+    return None
+
+def _read_csv(p: Path):
+    with p.open(newline='', encoding='utf-8') as f:
+        rdr = csv.DictReader(f)
+        return list(rdr)
+
+def _ensure_placeholder_targets(p: Path):
+    p.parent.mkdir(parents=True, exist_ok=True)
+    with p.open('w', newline='', encoding='utf-8') as f:
+        f.write("symbol,weight\nAAA,0.5\nBBB,-0.5\n")
+
+def _ensure_placeholder_returns(p: Path):
+    p.parent.mkdir(parents=True, exist_ok=True)
+    with p.open('w', newline='', encoding='utf-8') as f:
+        f.write("symbol,r\nAAA,0.01\nBBB,-0.005\n")
+
+def cmd_perf(date_str: str) -> int:
+    try:
+        d = datetime.strptime(date_str, '%Y-%m-%d').date()
+    except ValueError:
+        print("ERR: --date must be YYYY-MM-DD", file=sys.stderr)
+        return 2
+    d1 = d + timedelta(days=1)
+    targets_path = Path(f"targets/{d.isoformat()}.csv")
+    returns_path = Path(f"returns/{d1.isoformat()}.csv")
+
+    if not targets_path.exists():
+        _ensure_placeholder_targets(targets_path)
+        print(f"NOTE: created placeholder {targets_path}", file=sys.stderr)
+    if not returns_path.exists():
+        _ensure_placeholder_returns(returns_path)
+        print(f"NOTE: created placeholder {returns_path}", file=sys.stderr)
+
+    t_rows = _read_csv(targets_path)
+    r_rows = _read_csv(returns_path)
+    if not t_rows or not r_rows:
+        print("ERR: empty CSV(s)", file=sys.stderr)
+        return 1
+
+    t_sym = _guess(t_rows[0].keys(), ('symbol','ticker','asset'))
+    w_col = _guess(t_rows[0].keys(), ('w_final','weight','w','target_weight','w_pre'))
+    r_sym = _guess(r_rows[0].keys(), ('symbol','ticker','asset'))
+    r_col = _guess(r_rows[0].keys(), ('r','ret','return','r1d','log_ret','r_d1','gross_return'))
+    if not (t_sym and w_col and r_sym and r_col):
+        print("ERR: required columns not found in CSV headers", file=sys.stderr)
+        return 1
+
+    rmap = {}
+    for row in r_rows:
+        try:
+            rmap[row[r_sym]] = float(row[r_col])
+        except (TypeError, ValueError, KeyError):
+            continue
+
+    gross, matched = 0.0, 0
+    for row in t_rows:
+        try:
+            s = row[t_sym]
+            w = float(row[w_col])
+        except (TypeError, ValueError, KeyError):
+            continue
+        r = rmap.get(s)
+        if r is None:
+            continue
+        gross += w * r
+        matched += 1
+
+    out = {'date': d.isoformat(), 'gross_return': gross}
+    out_path = Path(f"performance/{d.isoformat()}.json")
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with out_path.open('w', encoding='utf-8') as f:
+        json.dump(out, f, ensure_ascii=False, separators=(',', ':'))
+
+    print(f" Perf {d.isoformat()}: r={gross:.6f}")
+    return 0
+
+def main():
+    p = argparse.ArgumentParser(prog='ats')
+    sub = p.add_subparsers(dest='cmd', required=True)
+    p_perf = sub.add_parser('perf', help='compute daily gross return')
+    p_perf.add_argument('--date', required=True, help='YYYY-MM-DD (targets date)')
+    args = p.parse_args()
+    if args.cmd == 'perf':
+        sys.exit(cmd_perf(args.date))
+
+if __name__ == '__main__':
+    main()
