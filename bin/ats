@@ -1,74 +1,64 @@
 ﻿#!/usr/bin/env python3
-import argparse, csv, json, sys, re
+import argparse, csv, json, sys, re, subprocess
 from pathlib import Path
 from datetime import datetime, timedelta
 
 ROOT = Path(__file__).resolve().parent.parent  # корінь репо
 
+# ---------- IO helpers ----------
 def _read_csv(p: Path):
     with p.open(newline='', encoding='utf-8') as f:
         return list(csv.DictReader(f))
 
-def _ensure_placeholder_targets(p: Path):
+def _write_csv(p: Path, header, rows):
     p.parent.mkdir(parents=True, exist_ok=True)
     with p.open('w', newline='', encoding='utf-8') as f:
-        f.write("symbol,weight\nAAA,0.5\nBBB,-0.5\n")
+        w = csv.writer(f)
+        w.writerow(header)
+        w.writerows(rows)
+
+def _ensure_placeholder_targets(p: Path):
+    _write_csv(p, ["symbol","weight"], [["AAA",0.5],["BBB",-0.5]])
 
 def _ensure_placeholder_returns(p: Path):
-    p.parent.mkdir(parents=True, exist_ok=True)
-    with p.open('w', newline='', encoding='utf-8') as f:
-        f.write("symbol,r\nAAA,0.01\nBBB,-0.005\n")
+    _write_csv(p, ["symbol","r"], [["AAA",0.01],["BBB",-0.005]])
 
-def _guess_ci(keys, candidates):
-    kl = {k.lower(): k for k in keys}
-    for c in candidates:
-        if c.lower() in kl:
-            return kl[c.lower()]
-    return None
-
+# ---------- column picking (tolerant) ----------
 _num = re.compile(r"^[\s+-]?\d+(\.\d+)?([eE][+-]?\d+)?\s*$")
 
 def _numeric_score(rows, key):
     ok = 0
     for r in rows:
         v = r.get(key, "")
-        if isinstance(v, (int, float)):
-            ok += 1
-            continue
+        if isinstance(v, (int, float)): ok += 1; continue
         if isinstance(v, str) and _num.match(v):
-            try:
-                float(v); ok += 1
-            except Exception:
-                pass
+            try: float(v); ok += 1
+            except: pass
     return ok
 
+def _guess_ci(keys, candidates):
+    kl = {k.lower(): k for k in keys}
+    for c in candidates:
+        k = kl.get(c.lower())
+        if k: return k
+    return None
+
 def _pick_symbol_key(keys):
-    return _guess_ci(
-        keys,
-        ("symbol","ticker","asset","secid","code","id","isin","ric","name")
-    ) or list(keys)[0]
+    return _guess_ci(keys, ("symbol","ticker","asset","secid","code","id","isin","ric","name")) or list(keys)[0]
 
 def _pick_weight_key(rows):
     keys = rows[0].keys()
     k = _guess_ci(keys, ("w_final","weight","w","target_weight","w_pre","weight_total"))
-    if k: return k
-    # Обираємо найбільш числову колонку
-    best = max(keys, key=lambda key: _numeric_score(rows, key))
-    return best
+    return k or max(keys, key=lambda key: _numeric_score(rows, key))
 
 def _pick_return_key(rows):
     keys = rows[0].keys()
     k = _guess_ci(keys, ("r","ret","return","r1d","log_ret","r_d1","gross_return"))
-    if k: return k
-    best = max(keys, key=lambda key: _numeric_score(rows, key))
-    return best
+    return k or max(keys, key=lambda key: _numeric_score(rows, key))
 
-def cmd_perf(date_str: str) -> int:
-    try:
-        d = datetime.strptime(date_str, '%Y-%m-%d').date()
-    except ValueError:
-        print("ERR: --date must be YYYY-MM-DD", file=sys.stderr)
-        return 2
+# ---------- perf core ----------
+def _perf_compute_and_write(date_str: str):
+    d = datetime.strptime(date_str, '%Y-%m-%d').date()
     d1 = d + timedelta(days=1)
     targets_path = ROOT / "targets" / f"{d.isoformat()}.csv"
     returns_path = ROOT / "returns" / f"{d1.isoformat()}.csv"
@@ -83,53 +73,94 @@ def cmd_perf(date_str: str) -> int:
     t_rows = _read_csv(targets_path)
     r_rows = _read_csv(returns_path)
     if not t_rows or not r_rows:
-        print("ERR: empty CSV(s)", file=sys.stderr)
-        return 1
+        raise RuntimeError("empty CSV(s)")
 
     t_sym = _pick_symbol_key(t_rows[0].keys())
     w_col = _pick_weight_key(t_rows)
     r_sym = _pick_symbol_key(r_rows[0].keys())
     r_col = _pick_return_key(r_rows)
 
-    # карта доходностей
     rmap = {}
     for row in r_rows:
-        try:
-            rmap[row[r_sym]] = float(row[r_col])
-        except Exception:
-            continue
+        try: rmap[row[r_sym]] = float(row[r_col])
+        except: pass
 
     gross = 0.0
-    matched = 0
     for row in t_rows:
         try:
             s = row[t_sym]
             w = float(row[w_col])
-        except Exception:
+            r = rmap.get(s)
+            if r is None: continue
+            gross += w * r
+        except: 
             continue
-        r = rmap.get(s)
-        if r is None:
-            continue
-        gross += w * r
-        matched += 1
 
     out = {'date': d.isoformat(), 'gross_return': gross}
     out_path = ROOT / "performance" / f"{d.isoformat()}.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with out_path.open('w', encoding='utf-8') as f:
         json.dump(out, f, ensure_ascii=False, separators=(',', ':'))
+    return gross
 
-    print(f" Perf {d.isoformat()}: r={gross:.6f}")
+# ---------- commands ----------
+def cmd_run(date_str: str) -> int:
+    # мінімальний генератор артефактів "targets/orders/execution" на дату
+    d = datetime.strptime(date_str, '%Y-%m-%d').date()
+    t_path = ROOT / "targets" / f"{d.isoformat()}.csv"
+    if not t_path.exists():
+        _ensure_placeholder_targets(t_path)
+    # дуже прості плейсхолдери для прийомки директорій
+    _write_csv(ROOT / "orders" / f"{d.isoformat()}.csv",
+               ["symbol","side","qty","px_ref","tc_est"], [["AAA",1,100,100.0,0.0001],["BBB",-1,100,50.0,0.0001]])
+    _write_csv(ROOT / "execution" / f"{d.isoformat()}.csv",
+               ["symbol","filled_qty","avg_px"], [["AAA",100,100.5],["BBB",100,49.8]])
+    print(f" Run {d.isoformat()}: targets/orders/execution ready")
+    return 0
+
+def cmd_perf(date_str: str) -> int:
+    try:
+        gross = _perf_compute_and_write(date_str)
+    except Exception as e:
+        print(f"ERR: {e}", file=sys.stderr)
+        return 1
+    print(f" Perf {date_str}: r={gross:.6f}")
+    return 0
+
+def cmd_daily(date_str: str) -> int:
+    # 1) run
+    if cmd_run(date_str) != 0:
+        return 1
+    # 2) perf
+    try:
+        gross = _perf_compute_and_write(date_str)
+    except Exception as e:
+        print(f"ERR: {e}", file=sys.stderr)
+        return 1
+    # 3) один рядок підсумку
+    print(f" Daily {date_str}: weights OK; r={gross:.6f}")
     return 0
 
 def main():
     p = argparse.ArgumentParser(prog='ats')
     sub = p.add_subparsers(dest='cmd', required=True)
+
+    p_run = sub.add_parser('run', help='produce targets/orders/execution (MVP)')
+    p_run.add_argument('--date', required=True, help='YYYY-MM-DD')
+
     p_perf = sub.add_parser('perf', help='compute daily gross return')
     p_perf.add_argument('--date', required=True, help='YYYY-MM-DD (targets date)')
+
+    p_daily = sub.add_parser('daily', help='run + perf summary')
+    p_daily.add_argument('--date', required=True, help='YYYY-MM-DD')
+
     args = p.parse_args()
+    if args.cmd == 'run':
+        sys.exit(cmd_run(args.date))
     if args.cmd == 'perf':
         sys.exit(cmd_perf(args.date))
+    if args.cmd == 'daily':
+        sys.exit(cmd_daily(args.date))
 
 if __name__ == '__main__':
     main()
