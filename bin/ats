@@ -149,7 +149,6 @@ def _compute_stats():
     if not rows:
         raise RuntimeError("performance/equity.csv is empty")
 
-    # r та equity як числа
     r_list, e_list = [], []
     for row in rows:
         try:
@@ -160,14 +159,12 @@ def _compute_stats():
 
     n = len(e_list)
     cum = (e_list[-1] - 1.0) if n else 0.0
-    # population stdev
     if len(r_list) >= 2:
         mu = sum(r_list) / len(r_list)
         var = sum((x - mu) ** 2 for x in r_list) / len(r_list)
         vol = math.sqrt(var)
     else:
         vol = 0.0
-    # max drawdown (relative, <= 0)
     mdd, peak = 0.0, 1.0
     for e in e_list:
         if e > peak: peak = e
@@ -217,7 +214,6 @@ def cmd_stats() -> int:
 
 def cmd_summary() -> int:
     try:
-        # 1) stats.json (або рахуємо зі свіжого equity.csv)
         stats_path = ROOT / "performance" / "stats.json"
         if stats_path.exists():
             with stats_path.open(encoding='utf-8') as f:
@@ -225,7 +221,6 @@ def cmd_summary() -> int:
         else:
             n, cum, vol, mdd = _compute_stats()
             s = {"days": n, "cum": cum, "vol": vol, "mdd": mdd}
-        # 2) останній рядок equity.csv
         eq_path = ROOT / "performance" / "equity.csv"
         rows = _read_csv(eq_path)
         if not rows:
@@ -239,6 +234,33 @@ def cmd_summary() -> int:
     print(f"Summary: {int(s.get('days',0))} days; Cum={float(s.get('cum',0.0)):.6f}; Vol={float(s.get('vol',0.0)):.6f}; MDD={float(s.get('mdd',0.0)):.6f}; last={d} r={r:.6f} equity={e:.6f}")
     return 0
 
+def cmd_report(date_str: str) -> int:
+    try:
+        # сформувати той самий рядок, що й summary
+        stats_path = ROOT / "performance" / "stats.json"
+        if stats_path.exists():
+            with stats_path.open(encoding='utf-8') as f:
+                s = json.load(f)
+        else:
+            n, cum, vol, mdd = _compute_stats()
+            s = {"days": n, "cum": cum, "vol": vol, "mdd": mdd}
+        eq_path = ROOT / "performance" / "equity.csv"
+        rows = _read_csv(eq_path)
+        if not rows: raise RuntimeError("performance/equity.csv is empty")
+        last = rows[-1]
+        d_last = last.get("date", "")
+        r_last = float(last.get("r", "0"))
+        e_last = float(last.get("equity", "1"))
+        summary_line = f"Summary: {int(s.get('days',0))} days; Cum={float(s.get('cum',0.0)):.6f}; Vol={float(s.get('vol',0.0)):.6f}; MDD={float(s.get('mdd',0.0)):.6f}; last={d_last} r={r_last:.6f} equity={e_last:.6f}"
+        # сформувати Markdown
+        out_path = ROOT / "docs" / f"report_{date_str}.md"
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        md = f"# Report {date_str}\n\n```\n{summary_line}\n```\n\n![Equity curve](docs/equity.png)\n"
+        out_path.write_text(md, encoding='utf-8')
+    except Exception as e:
+        print(f"ERR: {e}", file=sys.stderr); return 1
+    print(f" Report {date_str} written"); return 0
+
 def main():
     p = argparse.ArgumentParser(prog='ats'); sub = p.add_subparsers(dest='cmd', required=True)
     p_r = sub.add_parser('run', help='produce targets/orders/execution (MVP)'); p_r.add_argument('--date', required=True)
@@ -246,6 +268,7 @@ def main():
     p_d = sub.add_parser('daily', help='run + perf + equity update'); p_d.add_argument('--date', required=True)
     sub.add_parser('stats', help='print Cum/Vol/MDD and save to performance/stats.json')
     sub.add_parser('summary', help='print one-line summary from equity.csv + stats.json')
+    p_rep = sub.add_parser('report', help='write docs/report_<date>.md with summary + chart'); p_rep.add_argument('--date', required=True)
 
     a = p.parse_args()
     if a.cmd=='run': sys.exit(cmd_run(a.date))
@@ -253,5 +276,6 @@ def main():
     if a.cmd=='daily': sys.exit(cmd_daily(a.date))
     if a.cmd=='stats': sys.exit(cmd_stats())
     if a.cmd=='summary': sys.exit(cmd_summary())
+    if a.cmd=='report': sys.exit(cmd_report(a.date))
 
 if __name__ == '__main__': main()
