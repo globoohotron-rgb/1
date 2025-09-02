@@ -3,6 +3,8 @@ import argparse, csv, json, sys
 from pathlib import Path
 from datetime import datetime, timedelta
 
+ROOT = Path(__file__).resolve().parent.parent  # корінь репо
+
 def _guess(keys, candidates):
     for c in candidates:
         if c in keys: return c
@@ -30,8 +32,8 @@ def cmd_perf(date_str: str) -> int:
         print("ERR: --date must be YYYY-MM-DD", file=sys.stderr)
         return 2
     d1 = d + timedelta(days=1)
-    targets_path = Path(f"targets/{d.isoformat()}.csv")
-    returns_path = Path(f"returns/{d1.isoformat()}.csv")
+    targets_path = ROOT / "targets" / f"{d.isoformat()}.csv"
+    returns_path = ROOT / "returns" / f"{d1.isoformat()}.csv"
 
     if not targets_path.exists():
         _ensure_placeholder_targets(targets_path)
@@ -61,7 +63,7 @@ def cmd_perf(date_str: str) -> int:
         except (TypeError, ValueError, KeyError):
             continue
 
-    gross, matched = 0.0, 0
+    gross = 0.0
     for row in t_rows:
         try:
             s = row[t_sym]
@@ -72,10 +74,9 @@ def cmd_perf(date_str: str) -> int:
         if r is None:
             continue
         gross += w * r
-        matched += 1
 
     out = {'date': d.isoformat(), 'gross_return': gross}
-    out_path = Path(f"performance/{d.isoformat()}.json")
+    out_path = ROOT / "performance" / f"{d.isoformat()}.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with out_path.open('w', encoding='utf-8') as f:
         json.dump(out, f, ensure_ascii=False, separators=(',', ':'))
