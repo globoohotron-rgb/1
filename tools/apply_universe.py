@@ -138,7 +138,8 @@ def main():
     if M == 0: raise SystemExit('ERROR: після фільтра universe порожньо')
 
     # ключовий лог для smoke-тесту  ДРУКУЄМО ВІДРАЗУ
-    print(f'universe filter: {N}{M}', flush=True)
+    print(f"universe filter: {N}->{M}", flush=True)
+    print(f"universe filter: {N}→{M}", flush=True)
 
     # weights: softmax -> cap -> normalize
     syms   = [s for s,_ in filtered]
@@ -162,4 +163,5 @@ def main():
 
 if __name__ == '__main__':
     sys.exit(main())
+
 
