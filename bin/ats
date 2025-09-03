@@ -1,9 +1,9 @@
 ﻿#!/usr/bin/env python3
-import argparse, csv, json, sys, re, base64, math
+import argparse, csv, json, sys, re, base64, math, hashlib
 from pathlib import Path
 from datetime import datetime, timedelta
 
-ROOT = Path(__file__).resolve().parent.parent  # корінь репо
+ROOT = Path(__file__).resolve().parent.parent
 
 # ---------- IO helpers ----------
 def _read_csv(p: Path):
@@ -19,7 +19,7 @@ def _ensure_placeholder_targets(p: Path):
     _write_csv(p, ["symbol","weight"], [["AAA",0.5],["BBB",-0.5]])
 
 def _ensure_placeholder_returns(p: Path):
-    _write_csv(p, ["symbol","r"], [["AAA",0.01],["BBB",-0.005]])
+    _write_csv(p, ["symbol","r"], [["AAA",0.01],["BBB",-0.005],["CCC",0.0],["DDD",0.0]])
 
 # ---------- tolerant column picking ----------
 _num = re.compile(r"^[\s+-]?\d+(\.\d+)?([eE][+-]?\d+)?\s*$")
@@ -143,20 +143,15 @@ def _plot_equity_png():
 # ---------- stats ----------
 def _compute_stats():
     p = ROOT / "performance" / "equity.csv"
-    if not p.exists():
-        raise FileNotFoundError("performance/equity.csv not found")
+    if not p.exists(): raise FileNotFoundError("performance/equity.csv not found")
     rows = _read_csv(p)
-    if not rows:
-        raise RuntimeError("performance/equity.csv is empty")
-
+    if not rows: raise RuntimeError("performance/equity.csv is empty")
     r_list, e_list = [], []
     for row in rows:
         try:
             r_list.append(float(row.get("r", "0")))
             e_list.append(float(row.get("equity", "1")))
-        except:
-            continue
-
+        except: continue
     n = len(e_list)
     cum = (e_list[-1] - 1.0) if n else 0.0
     if len(r_list) >= 2:
@@ -170,7 +165,6 @@ def _compute_stats():
         if e > peak: peak = e
         dd = (e / peak) - 1.0
         if dd < mdd: mdd = dd
-
     out = {"days": n, "cum": cum, "vol": vol, "mdd": mdd}
     out_path = ROOT / "performance" / "stats.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -178,11 +172,56 @@ def _compute_stats():
         json.dump(out, f, ensure_ascii=False, separators=(',', ':'))
     return n, cum, vol, mdd
 
+# ---------- config + weights ----------
+def _load_config():
+    cfg_path = ROOT / "config" / "ats.yaml"
+    cfg_path.parent.mkdir(parents=True, exist_ok=True)
+    if not cfg_path.exists():
+        cfg_path.write_text("softmax_tau: 0.5\nrisk_target_sigma: 0.10\n", encoding="utf-8")
+        print(f"NOTE: created default config at {cfg_path}", file=sys.stderr)
+    data = {"softmax_tau": 0.5, "risk_target_sigma": 0.10}
+    for line in cfg_path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or ":" not in line: continue
+        k, v = [x.strip() for x in line.split(":", 1)]
+        try: data[k] = float(v)
+        except: data[k] = v
+    return data
+
+def _score_for_symbol(sym: str) -> float:
+    h = hashlib.md5(sym.encode("utf-8")).hexdigest()
+    x = int(h[:8], 16) / 0xFFFFFFFF
+    return 2.0 * x - 1.0
+
+def _weights_from_scores(symbols, tau: float, sigma: float):
+    tau = max(float(tau), 1e-9); sigma = float(sigma)
+    raw = []
+    for s in symbols:
+        sc = _score_for_symbol(s)
+        w = math.tanh(sc / tau)
+        raw.append((s, w))
+    denom = sum(abs(w) for _, w in raw) or 1.0
+    scale = (sigma if sigma > 0 else 1.0) / denom
+    return [(s, w * scale) for s, w in raw]
+
 # ---------- commands ----------
 def cmd_run(date_str: str) -> int:
     d = datetime.strptime(date_str, '%Y-%m-%d').date()
+    cfg = _load_config()
+    tau = float(cfg.get("softmax_tau", 0.5))
+    sig = float(cfg.get("risk_target_sigma", 0.10))
+    print(f"Using tau={tau}; σ_target={sig}")
+    d1 = d + timedelta(days=1)
+    ret_path = ROOT / "returns" / f"{d1.isoformat()}.csv"
+    if ret_path.exists():
+        r_rows = _read_csv(ret_path)
+        sy_key = _pick_symbol_key(r_rows[0].keys()) if r_rows else "symbol"
+        symbols = sorted({row.get(sy_key) for row in r_rows if row.get(sy_key)})
+    else:
+        symbols = ["AAA", "BBB", "CCC", "DDD"]
     t_path = ROOT / "targets" / f"{d.isoformat()}.csv"
-    if not t_path.exists(): _ensure_placeholder_targets(t_path)
+    weights = _weights_from_scores(symbols, tau, sig)
+    _write_csv(t_path, ["symbol","weight"], weights)
     _write_csv(ROOT / "orders" / f"{d.isoformat()}.csv",
                ["symbol","side","qty","px_ref","tc_est"], [["AAA",1,100,100.0,0.0001],["BBB",-1,100,50.0,0.0001]])
     _write_csv(ROOT / "execution" / f"{d.isoformat()}.csv",
@@ -223,12 +262,9 @@ def cmd_summary() -> int:
             s = {"days": n, "cum": cum, "vol": vol, "mdd": mdd}
         eq_path = ROOT / "performance" / "equity.csv"
         rows = _read_csv(eq_path)
-        if not rows:
-            raise RuntimeError("performance/equity.csv is empty")
+        if not rows: raise RuntimeError("performance/equity.csv is empty")
         last = rows[-1]
-        d = last.get("date", "")
-        r = float(last.get("r", "0"))
-        e = float(last.get("equity", "1"))
+        d = last.get("date", ""); r = float(last.get("r", "0")); e = float(last.get("equity", "1"))
     except Exception as e:
         print(f"ERR: {e}", file=sys.stderr); return 1
     print(f"Summary: {int(s.get('days',0))} days; Cum={float(s.get('cum',0.0)):.6f}; Vol={float(s.get('vol',0.0)):.6f}; MDD={float(s.get('mdd',0.0)):.6f}; last={d} r={r:.6f} equity={e:.6f}")
@@ -247,9 +283,7 @@ def cmd_report(date_str: str) -> int:
         rows = _read_csv(eq_path)
         if not rows: raise RuntimeError("performance/equity.csv is empty")
         last = rows[-1]
-        d_last = last.get("date", "")
-        r_last = float(last.get("r", "0"))
-        e_last = float(last.get("equity", "1"))
+        d_last = last.get("date", ""); r_last = float(last.get("r", "0")); e_last = float(last.get("equity", "1"))
         summary_line = f"Summary: {int(s.get('days',0))} days; Cum={float(s.get('cum',0.0)):.6f}; Vol={float(s.get('vol',0.0)):.6f}; MDD={float(s.get('mdd',0.0)):.6f}; last={d_last} r={r_last:.6f} equity={e_last:.6f}"
         out_path = ROOT / "docs" / f"report_{date_str}.md"
         out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -267,14 +301,21 @@ def cmd_backfill(date_from: str, date_to: str) -> int:
         print("ERR: --from/--to must be YYYY-MM-DD", file=sys.stderr); return 2
     if d0 > d1:
         print("ERR: --from must be <= --to", file=sys.stderr); return 2
-    cur = d0
-    step = timedelta(days=1)
+    cur = d0; step = timedelta(days=1)
     while cur <= d1:
         rc = cmd_daily(cur.isoformat())
         if rc != 0: return rc
         cur += step
-    # останній рядок ' Daily <to>: ...' уже надруковано
     return 0
+
+def cmd_doctor() -> int:
+    req = [ROOT / "performance" / "equity.csv",
+           ROOT / "performance" / "stats.json",
+           ROOT / "docs" / "equity.png"]
+    missing = [str(p) for p in req if not p.exists()]
+    if missing:
+        print("HEALTH: FAIL  missing: " + ", ".join(missing)); return 1
+    print("HEALTH: PASS"); return 0
 
 def main():
     p = argparse.ArgumentParser(prog='ats'); sub = p.add_subparsers(dest='cmd', required=True)
@@ -285,8 +326,8 @@ def main():
     sub.add_parser('summary', help='print one-line summary from equity.csv + stats.json')
     p_rep = sub.add_parser('report', help='write docs/report_<date>.md with summary + chart'); p_rep.add_argument('--date', required=True)
     p_bf = sub.add_parser('backfill', help='run daily for each date in range (inclusive)')
-    p_bf.add_argument('--from', dest='date_from', required=True)
-    p_bf.add_argument('--to', dest='date_to', required=True)
+    p_bf.add_argument('--from', dest='date_from', required=True); p_bf.add_argument('--to', dest='date_to', required=True)
+    sub.add_parser('doctor', help='health check: required artifacts exist')
 
     a = p.parse_args()
     if a.cmd=='run': sys.exit(cmd_run(a.date))
@@ -296,5 +337,6 @@ def main():
     if a.cmd=='summary': sys.exit(cmd_summary())
     if a.cmd=='report': sys.exit(cmd_report(a.date))
     if a.cmd=='backfill': sys.exit(cmd_backfill(a.date_from, a.date_to))
+    if a.cmd=='doctor': sys.exit(cmd_doctor())
 
 if __name__ == '__main__': main()
