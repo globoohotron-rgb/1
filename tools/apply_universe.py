@@ -1,11 +1,5 @@
 ﻿#!/usr/bin/env python3
 # tools/apply_universe.py
-# Фільтр universe + побудова цільових ваг:
-#   alpha/<date>.csv    universe/<date>.csv  ->  targets/<date>.csv
-#   фільтр: is_active==1 та cap_usd >= min_cap_usd (із config/ats.yaml або $MIN_CAP_USD)
-#   ваги: softmax(alpha) -> cap(max_weight_pct) -> нормування до 1
-#   логи: "universe filter: NM" і "capped X/Y"
-
 import os, sys, csv, re, math, argparse, glob
 
 def _yaml_get(text, key):
@@ -33,18 +27,14 @@ def _yaml_get(text, key):
 
 def _norm_cap(v):
     s = str(v).strip()
-    if s.endswith('%'):
-        return float(s[:-1])/100.0
-    f = float(s)
-    return f/100.0 if f>1 else f
+    if s.endswith('%'): return float(s[:-1])/100.0
+    f = float(s); return f/100.0 if f>1 else f
 
 def _to_float(x, default=None):
     if x is None: return default
     s = str(x).strip().replace(',', '')
-    try:
-        return float(s)
-    except:
-        return default
+    try: return float(s)
+    except: return default
 
 def _to_bool(x):
     s = str(x).strip().lower()
@@ -60,8 +50,7 @@ def read_config():
         min_cap = raw if raw is not None else '0'
     if max_w is None:
         raw = _yaml_get(txt,'max_weight_pct')
-        if raw is None:
-            raise SystemExit('ERROR: у config/ats.yaml немає max_weight_pct (або задайте $MAX_WEIGHT_PCT)')
+        if raw is None: raise SystemExit('ERROR: немає max_weight_pct (або задайте $MAX_WEIGHT_PCT)')
         max_w = raw
     return float(min_cap), _norm_cap(max_w)
 
@@ -85,13 +74,12 @@ def read_alpha(path):
         sym_col = detect_col(rdr.fieldnames or [], ['symbol','ticker','secid','asset'])
         a_col   = detect_col(rdr.fieldnames or [], ['alpha','score','signal','alpha_score'])
         if not sym_col or not a_col:
-            raise SystemExit(f'ERROR: alpha {path} повинен мати колонки symbol,ticker... та alpha,score...')
+            raise SystemExit(f'ERROR: alpha {path} має містити symbol та alpha')
         rows=[]
         for r in rdr:
             s = (r[sym_col] or '').strip().upper()
             a = _to_float(r[a_col], default=0.0)
-            if s!='':
-                rows.append((s, a))
+            if s!='': rows.append((s, a))
         return rows
 
 def read_universe(path):
@@ -101,14 +89,13 @@ def read_universe(path):
         act_col = detect_col(rdr.fieldnames or [], ['is_active','active'])
         cap_col = detect_col(rdr.fieldnames or [], ['cap_usd','market_cap_usd','mkt_cap','cap'])
         if not sym_col or not act_col or not cap_col:
-            raise SystemExit(f'ERROR: universe {path} повинен мати symbol, is_active, cap_usd')
+            raise SystemExit(f'ERROR: universe {path} має містити symbol, is_active, cap_usd')
         rows=[]
         for r in rdr:
             s = (r[sym_col] or '').strip().upper()
             active = _to_bool(r[act_col])
             cap = _to_float(r[cap_col], default=0.0)
-            if s!='':
-                rows.append((s, active, cap))
+            if s!='': rows.append((s, active, cap))
         return rows
 
 def softmax(vals):
@@ -116,8 +103,7 @@ def softmax(vals):
     m = max(vals)
     exps = [math.exp(v-m) for v in vals]
     z = sum(exps)
-    if z <= 0:
-        return [1.0/len(vals)]*len(vals)
+    if z <= 0: return [1.0/len(vals)]*len(vals)
     return [e/z for e in exps]
 
 def main():
@@ -131,10 +117,9 @@ def main():
     alpha_path = find_file('alpha', date)
     uni_path   = find_file('universe', date)
     if not alpha_path or not uni_path:
-        raise SystemExit(f'ERROR: не знайдено файли alpha/universe для дати {date}')
+        raise SystemExit(f'ERROR: не знайдено alpha/universe для дати {date}')
 
     min_cap_usd, max_weight_pct = read_config()
-
     alpha_rows = read_alpha(alpha_path)
     uni_rows   = read_universe(uni_path)
 
@@ -150,8 +135,10 @@ def main():
             filtered.append((s, alpha_map[s]))
     M = len(filtered)
 
-    if M == 0:
-        raise SystemExit('ERROR: після фільтра universe порожньо')
+    if M == 0: raise SystemExit('ERROR: після фільтра universe порожньо')
+
+    # ключовий лог для smoke-тесту  ДРУКУЄМО ВІДРАЗУ
+    print(f'universe filter: {N}{M}', flush=True)
 
     # weights: softmax -> cap -> normalize
     syms   = [s for s,_ in filtered]
@@ -161,7 +148,7 @@ def main():
     capped_cnt = sum(1 for x in w if x>max_weight_pct)
     s = sum(capped)
     w_norm = [x/s for x in capped] if s>0 else [1.0/M]*M
-    print(f'capped {capped_cnt}/{M}')
+    print(f'capped {capped_cnt}/{M}', flush=True)
 
     # write targets/<date>.csv
     out_path = os.path.join('targets', f'{date}.csv')
@@ -171,9 +158,6 @@ def main():
         wr.writerow(['symbol','w_final','weight'])
         for sym, ww in zip(syms, w_norm):
             wr.writerow([sym, f'{ww:.12f}', f'{ww:.12f}'])
-
-    # ключовий лог для smoke-тесту:
-    print(f'universe filter: {N}{M}')
     return 0
 
 if __name__ == '__main__':
