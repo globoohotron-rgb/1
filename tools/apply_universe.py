@@ -1,7 +1,9 @@
 ﻿#!/usr/bin/env python3
-# tools/apply_universe.py
-# Фільтр universe + портфель: alpha/<date>.csv  universe/<date>.csv  targets/<date>.csv
-# Логи: "universe filter: NM" та "capped X/Y"
+# tools/apply_universe.py  universe-діагностика + побудова ваг
+# Друкує:
+#   1) universe path=<abs> exists=<True/False>
+#   2) universe filter: NM   або   NN (SKIP: <reason>)
+# Потім рахує ваги: softmax  cap(max_weight_pct)  нормування до 1, пише targets/<date>.csv
 
 import os, sys, csv, re, math, argparse, glob
 
@@ -47,52 +49,52 @@ def read_config():
     cfg = os.path.join('config','ats.yaml')
     txt = open(cfg,'r',encoding='utf-8').read() if os.path.exists(cfg) else ''
     min_cap = os.getenv('MIN_CAP_USD') or _yaml_get(txt,'min_cap_usd') or '0'
-    max_w   = os.getenv('MAX_WEIGHT_PCT') or _yaml_get(txt,'max_weight_pct')
-    if max_w is None:
-        raise SystemExit('ERROR: у config/ats.yaml немає max_weight_pct (або задайте $MAX_WEIGHT_PCT)')
+    max_w   = os.getenv('MAX_WEIGHT_PCT') or _yaml_get(txt,'max_weight_pct') or '25%'
     return float(min_cap), _norm_cap(max_w)
 
 def find_file(folder, date):
     p = os.path.join(folder, f'{date}.csv')
     if os.path.exists(p): return p
     files = sorted(glob.glob(os.path.join(folder,'*.csv')), key=lambda x:(os.path.getmtime(x),x), reverse=True)
-    return files[0] if files else None
+    return files[0] if files else p  # повертаємо очікуваний шлях (для діагностики)
 
 def detect_col(names, candidates):
     for c in candidates:
         if c in names: return c
-    lowered = {n.lower(): n for n in names}
+    lower = {n.lower(): n for n in names}
     for c in candidates:
-        if c.lower() in lowered: return lowered[c.lower()]
+        if c.lower() in lower: return lower[c.lower()]
     return None
 
 def read_alpha(path):
+    rows=[]
     with open(path,'r',encoding='utf-8',newline='') as f:
         rdr = csv.DictReader(f)
         sym = detect_col(rdr.fieldnames or [], ['symbol','ticker','secid','asset'])
         col = detect_col(rdr.fieldnames or [], ['alpha','score','signal','alpha_score'])
-        if not sym or not col: raise SystemExit(f'ERROR: alpha {path} повинен мати symbol та alpha/score')
-        rows=[]
+        if not sym or not col:
+            raise RuntimeError('missing required columns in alpha')
         for r in rdr:
             s = (r[sym] or '').strip().upper()
             a = _to_float(r[col], 0.0)
             if s: rows.append((s,a))
-        return rows
+    return rows
 
 def read_universe(path):
+    rows=[]
     with open(path,'r',encoding='utf-8',newline='') as f:
         rdr = csv.DictReader(f)
         sym = detect_col(rdr.fieldnames or [], ['symbol','ticker','secid','asset'])
         act = detect_col(rdr.fieldnames or [], ['is_active','active'])
         cap = detect_col(rdr.fieldnames or [], ['cap_usd','market_cap_usd','mkt_cap','cap'])
-        if not sym or not act or not cap: raise SystemExit(f'ERROR: universe {path} повинен мати symbol, is_active, cap_usd')
-        rows=[]
+        if not sym or not act or not cap:
+            raise RuntimeError('missing required columns in universe')
         for r in rdr:
             s = (r[sym] or '').strip().upper()
             a = _to_bool(r[act])
             c = _to_float(r[cap], 0.0)
             if s: rows.append((s,a,c))
-        return rows
+    return rows
 
 def softmax(vals):
     if not vals: return []
@@ -109,41 +111,82 @@ def main():
 
     alpha_path = find_file('alpha', date)
     uni_path   = find_file('universe', date)
-    if not alpha_path or not uni_path:
-        raise SystemExit(f'ERROR: не знайдено alpha/universe для дати {date}')
 
-    min_cap_usd, max_weight_pct = read_config()
-    alpha_rows = read_alpha(alpha_path)
-    uni_rows   = read_universe(uni_path)
+    # 1) ДІАГНОСТИКА ШЛЯХУ
+    uni_abs = os.path.abspath(uni_path)
+    uni_ex  = os.path.exists(uni_path)
+    print(f'universe path={uni_abs} exists={uni_ex}', flush=True)
 
+    # 2) Читаємо alpha (N) та universe (для M); при помилках  SKIP і фолбек
+    skip_reason = None
+    alpha_rows = []
+    try:
+        if not os.path.exists(alpha_path):
+            skip_reason = 'alpha not found'
+        else:
+            alpha_rows = read_alpha(alpha_path)
+    except Exception:
+        skip_reason = 'alpha read error'
     alpha_map = {s:a for s,a in alpha_rows}
     N = len(alpha_map)
 
-    filtered = []
-    for s, act, cap in uni_rows:
-        if not act: continue
-        if cap is None or cap < min_cap_usd: continue
-        if s in alpha_map:
-            filtered.append((s, alpha_map[s]))
-    M = len(filtered)
+    filtered = list(alpha_map.items())  # фолбек: без фільтра
+    M = N
 
-    # КЛЮЧОВИЙ ЛОГ  друкуємо відразу (дві форми)
-    print(f'universe filter: {N}->{M}', flush=True)
-    print(f'universe filter: {N}{M}', flush=True)
+    if skip_reason is None:
+        if not uni_ex:
+            skip_reason = 'universe not found'
+        else:
+            try:
+                min_cap_usd, max_weight_pct = read_config()  # читаємо тут, щоб diag охоплював і поріг
+                uni_rows = read_universe(uni_path)
+                # застосовуємо фільтр
+                fm = []
+                for s,active,cap in uni_rows:
+                    if not active: continue
+                    if cap is None or cap < min_cap_usd: continue
+                    if s in alpha_map:
+                        fm.append((s, alpha_map[s]))
+                if not fm:
+                    skip_reason = 'empty after filter'
+                else:
+                    filtered = fm
+                    M = len(filtered)
+            except RuntimeError as e:
+                skip_reason = str(e)
+            except Exception:
+                skip_reason = 'universe read error'
 
-    if M == 0: raise SystemExit('ERROR: після фільтра universe порожньо')
+    # 3) ДІАГНОСТИЧНИЙ РЯДОК ФІЛЬТРА
+    if skip_reason:
+        print(f'universe filter: {N}{N} (SKIP: {skip_reason})', flush=True)
+    else:
+        print(f'universe filter: {N}{M}', flush=True)
+
+    # 4) Побудова ваг (на filtered або фолбеку)
+    if not filtered:
+        # крайній фолбек, щоб не впасти
+        filtered = list(alpha_map.items())
+        M = len(filtered)
+
+    # конфіг для cap (повторно, якщо не читали)
+    try:
+        _, max_weight_pct
+    except NameError:
+        _, max_weight_pct = read_config()
 
     syms   = [s for s,_ in filtered]
     alphas = [a for _,a in filtered]
+
     w = softmax(alphas)
     capped = [min(x, max_weight_pct) for x in w]
     capped_cnt = sum(1 for x in w if x>max_weight_pct)
-    s = sum(capped)
-    w_norm = [x/s for x in capped] if s>0 else [1.0/M]*M
-    print(f'capped {capped_cnt}/{M}', flush=True)
+    s = sum(capped) or 1.0
+    w_norm = [x/s for x in capped]
+    print(f'capped {capped_cnt}/{len(syms)}', flush=True)
 
-    out_path = os.path.join('targets', f'{date}.csv')
     os.makedirs('targets', exist_ok=True)
+    out_path = os.path.join('targets', f'{date}.csv')
     with open(out_path,'w',encoding='utf-8',newline='') as f:
         wr = csv.writer(f)
         wr.writerow(['symbol','w_final','weight'])

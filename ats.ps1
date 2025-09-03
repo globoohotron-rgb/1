@@ -104,7 +104,16 @@ if ($args -contains "run") {
 
 function Invoke-PrintUniverseLine {
     param([string]$Date)
-    if (-not $Date -or $Date -eq '') {
+# === diag: universe path & filter summary ===
+if ($args -and ($args[0] -eq 'run' -or $args -contains 'run')) {
+  try {
+    $d = $null; $ix = [Array]::IndexOf($args,'--date')
+    if ($ix -ge 0 -and $ix + 1 -lt $args.Length) { $d = $args[$ix+1] }
+    if (-not $d -or $d -eq '') { $d = Get-Date -Format 'yyyy-MM-dd' }
+    & .\tools\diag_universe.ps1 -Date $d
+  } catch {}
+}
+# === end diag ===    if (-not $Date -or $Date -eq '') {
         $t = Get-ChildItem -Path 'targets' -Filter '*.csv' -ErrorAction SilentlyContinue |
              Sort-Object LastWriteTime -Descending | Select-Object -First 1
         if ($t) { $Date = [IO.Path]::GetFileNameWithoutExtension($t.Name) } else { $Date = (Get-Date -Format 'yyyy-MM-dd') }
@@ -122,6 +131,7 @@ if ($__i -ge 0 -and $__i + 1 -lt $args.Length) { $__date = $args[$__i + 1] }
 if ( ($args -and $args[0] -eq 'run') -or ($args -contains 'run') ) {
     Invoke-PrintUniverseLine -Date $__date
 }
+
 
 
 
