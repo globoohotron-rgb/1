@@ -1,5 +1,5 @@
 ﻿#!/usr/bin/env python3
-import argparse, csv, json, sys, re, base64, math, hashlib
+import argparse, csv, json, sys, re, base64, math, hashlib, subprocess
 from pathlib import Path
 from datetime import datetime, timedelta
 
@@ -263,9 +263,10 @@ def cmd_daily(date_str: str) -> int:
         rnet = _get_rnet_for_date(date_str)
         _update_equity_csv(date_str, rnet)
         _plot_equity_png()
+        _write_run_manifest(date_str, rnet)
     except Exception as e:
         print(f"ERR: {e}", file=sys.stderr); return 1
-    print(f" Daily {date_str}: weights OK; r_net={rnet:.6f}"); return 0
+    print(f"✓ Daily {date_str}: weights OK; r_net={rnet:.6f}"); return 0
 
 def cmd_stats() -> int:
     try: n, cum, vol, mdd = _compute_stats()
@@ -345,3 +346,76 @@ def main():
     if a.cmd=="doctor": sys.exit(cmd_doctor())
 
 if __name__ == "__main__": main()
+
+def _sha256_of(p: Path) -> str:
+    try:
+        import hashlib
+        h = hashlib.sha256()
+        with p.open("rb") as f:
+            for chunk in iter(lambda: f.read(65536), b""):
+                h.update(chunk)
+        return h.hexdigest()
+    except Exception:
+        return "missing"
+
+def _git_commit_sha() -> str:
+    try:
+        r = subprocess.run(["git","rev-parse","HEAD"], cwd=str(ROOT), capture_output=True, text=True, timeout=5)
+        s = (r.stdout or "").strip()
+        return s if s else "unknown"
+    except Exception:
+        return "unknown"
+
+def _read_equity_for_date(date_str: str) -> float:
+    p = ROOT / "performance" / "equity.csv"
+    try:
+        rows = _read_csv(p)
+        for row in rows:
+            if row.get("date") == date_str:
+                return float(row.get("equity","1"))
+        return float(rows[-1].get("equity","1")) if rows else 1.0
+    except Exception:
+        return 1.0
+
+def _write_run_manifest(date_str: str, r_net: float) -> None:
+    from datetime import datetime as _dt, timedelta as _td
+    d = _dt.strptime(date_str, "%Y-%m-%d").date()
+    d1 = d + _td(days=1)
+    cfg = _load_config()
+    params = {
+        "tau": float(cfg.get("softmax_tau", 0.5)),
+        "sigma_target": float(cfg.get("risk_target_sigma", 0.10)),
+        "trading_cost_bps": float(cfg.get("trading_cost_bps", 0.0)),
+        "alert_mdd_pct": float(cfg.get("alert_mdd_pct", 20.0))
+    }
+    # inputs (мінімально необхідні для відтворення)
+    inputs = []
+    for rel in [f"returns/{d1}.csv"]:
+        p = ROOT / rel
+        inputs.append({"path": rel, "sha256": _sha256_of(p) if p.exists() else "missing"})
+    # outputs (усі щоденні артефакти)
+    out_list = [
+        f"targets/{d}.csv",
+        f"orders/{d}.csv",
+        f"execution/{d}.csv",
+        f"performance/{d}.json",
+        "performance/equity.csv",
+        "docs/equity.png"
+    ]
+    outputs = []
+    for rel in out_list:
+        p = ROOT / rel
+        outputs.append({"path": rel, "sha256": _sha256_of(p) if p.exists() else "missing"})
+    manifest = {
+        "date": date_str,
+        "commit": _git_commit_sha(),
+        "params": params,
+        "inputs": inputs,
+        "outputs": outputs,
+        "r_net": float(r_net),
+        "equity": float(_read_equity_for_date(date_str))
+    }
+    out_path = ROOT / "runs" / f"{date_str}.json"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with out_path.open("w", encoding="utf-8") as f:
+        json.dump(manifest, f, ensure_ascii=False, separators=(",", ":"))
