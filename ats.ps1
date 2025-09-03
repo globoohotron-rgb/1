@@ -11,3 +11,11 @@ if (Get-Command py -ErrorAction SilentlyContinue) {
   exit 127
 }
 exit $LASTEXITCODE
+# === universe filter hook (auto-injected) ===
+if ($args -contains "run") {
+    $date = $null
+    $i = [Array]::IndexOf($args, "--date")
+    if ($i -ge 0 -and $i + 1 -lt $args.Length) { $date = $args[$i + 1] }
+    if (-not $date) { $date = Get-Date -Format "yyyy-MM-dd" }
+    python tools\apply_universe.py --date $date
+}
