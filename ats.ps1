@@ -41,3 +41,4 @@ if ($__i -ge 0 -and $__i + 1 -lt $args.Length) { $__date = $args[$__i + 1] }
 if ( ($args -and $args[0] -eq 'run') -or ($args -contains 'run') ) {
     Invoke-PrintUniverseLine -Date $__date
 }
+
