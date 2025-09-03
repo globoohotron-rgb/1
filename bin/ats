@@ -291,18 +291,19 @@ def cmd_run(date_str: str) -> int:
     d1 = d + timedelta(days=1)
     ret_path = ROOT / "returns" / f"{d1.isoformat()}.csv"
     if ret_path.exists():
-        rr = _read_csv(ret_path); sy = _pick_symbol_key(rr[0].keys()) if rr else "symbol"
+        rr = _read_csv(ret_path)
+        sy = _pick_symbol_key(rr[0].keys()) if rr else "symbol"
         symbols = sorted({r.get(sy) for r in rr if r.get(sy)})
     else:
         symbols = ["AAA","BBB","CCC","DDD"]
     raw = _weights_from_scores(symbols, tau, sigma)
     syms = [s for s,_ in raw]
     vals = [float(w) for _,w in raw]
-    capped_count = 0
-    capped = []
+    capped, capped_count = [], 0
     for w in vals:
         cw = max(-cap, min(cap, w))
-        if abs(cw - w) > 1e-12: capped_count += 1
+        if abs(cw - w) > 1e-12:
+            capped_count += 1
         capped.append(cw)
     denom = sum(abs(x) for x in capped) or 1.0
     norm = [x/denom for x in capped]
@@ -414,6 +415,7 @@ def main():
     if a.cmd=="doctor": sys.exit(cmd_doctor())
 
 if __name__ == "__main__": main()
+
 
 
 
