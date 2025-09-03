@@ -1,7 +1,7 @@
 ﻿#!/usr/bin/env python3
 # tools/apply_universe.py
 # Фільтр universe + побудова цільових ваг:
-#   alpha/<date>.csv  ×  universe/<date>.csv  ->  targets/<date>.csv
+#   alpha/<date>.csv    universe/<date>.csv  ->  targets/<date>.csv
 #   фільтр: is_active==1 та cap_usd >= min_cap_usd (із config/ats.yaml або $MIN_CAP_USD)
 #   ваги: softmax(alpha) -> cap(max_weight_pct) -> нормування до 1
 #   логи: "universe filter: NM" і "capped X/Y"
@@ -9,7 +9,6 @@
 import os, sys, csv, re, math, argparse, glob
 
 def _yaml_get(text, key):
-    # спроба PyYAML; якщо немає  regex
     try:
         import yaml  # type: ignore
         data = yaml.safe_load(text)
@@ -54,7 +53,6 @@ def _to_bool(x):
 def read_config():
     cfg_path = os.path.join('config','ats.yaml')
     txt = open(cfg_path,'r',encoding='utf-8').read() if os.path.exists(cfg_path) else ''
-    # overrides
     min_cap = os.getenv('MIN_CAP_USD')
     max_w   = os.getenv('MAX_WEIGHT_PCT')
     if min_cap is None:
@@ -70,14 +68,12 @@ def read_config():
 def find_file(folder, date):
     p = os.path.join(folder, f'{date}.csv')
     if os.path.exists(p): return p
-    # fallback  найсвіжіший
     files = sorted(glob.glob(os.path.join(folder,'*.csv')), key=lambda x:(os.path.getmtime(x),x), reverse=True)
     return files[0] if files else None
 
 def detect_col(names, candidates):
     for c in candidates:
         if c in names: return c
-    # insensitive
     lowered = {n.lower(): n for n in names}
     for c in candidates:
         if c.lower() in lowered: return lowered[c.lower()]
@@ -120,14 +116,14 @@ def softmax(vals):
     m = max(vals)
     exps = [math.exp(v-m) for v in vals]
     z = sum(exps)
-    if z <= 0:  # усі alpha ~ -inf
+    if z <= 0:
         return [1.0/len(vals)]*len(vals)
     return [e/z for e in exps]
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--date', required=False, default=None)
-    args, unknown = ap.parse_known_args()
+    args, _ = ap.parse_known_args()
     date = args.date or (os.getenv('ATS_DATE') or '')
     if not date:
         date = __import__('datetime').date.today().strftime('%Y-%m-%d')
@@ -145,7 +141,6 @@ def main():
     alpha_map = {s:a for s,a in alpha_rows}
     N = len(alpha_map)
 
-    # merge + filter
     uni_map = {s:(act,cap) for s,act,cap in uni_rows}
     filtered = []
     for s,(act,cap) in uni_map.items():
@@ -154,17 +149,16 @@ def main():
         if s in alpha_map:
             filtered.append((s, alpha_map[s]))
     M = len(filtered)
-    print(f'universe filter: {N}{M}')
 
     if M == 0:
         raise SystemExit('ERROR: після фільтра universe порожньо')
 
     # weights: softmax -> cap -> normalize
-    syms  = [s for s,_ in filtered]
-    alphas= [a for _,a in filtered]
+    syms   = [s for s,_ in filtered]
+    alphas = [a for _,a in filtered]
     w = softmax(alphas)
     capped = [min(x, max_weight_pct) for x in w]
-    capped_cnt = sum(1 for i,x in enumerate(w) if x>max_weight_pct)
+    capped_cnt = sum(1 for x in w if x>max_weight_pct)
     s = sum(capped)
     w_norm = [x/s for x in capped] if s>0 else [1.0/M]*M
     print(f'capped {capped_cnt}/{M}')
@@ -175,9 +169,11 @@ def main():
     with open(out_path,'w',encoding='utf-8',newline='') as f:
         wr = csv.writer(f)
         wr.writerow(['symbol','w_final','weight'])
-        for s, ww in zip(syms, w_norm):
-            wr.writerow([s, f'{ww:.12f}', f'{ww:.12f}'])
-    # done
+        for sym, ww in zip(syms, w_norm):
+            wr.writerow([sym, f'{ww:.12f}', f'{ww:.12f}'])
+
+    # ключовий лог для smoke-тесту:
+    print(f'universe filter: {N}{M}')
     return 0
 
 if __name__ == '__main__':
