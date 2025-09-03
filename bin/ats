@@ -7,12 +7,12 @@ ROOT = Path(__file__).resolve().parent.parent  # repo root
 
 # ---------- IO ----------
 def _read_csv(p: Path):
-    with p.open(newline='', encoding='utf-8') as f:
+    with p.open(newline="", encoding="utf-8") as f:
         return list(csv.DictReader(f))
 
 def _write_csv(p: Path, header, rows):
     p.parent.mkdir(parents=True, exist_ok=True)
-    with p.open('w', newline='', encoding='utf-8') as f:
+    with p.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f); w.writerow(header); w.writerows(rows)
 
 def _ensure_placeholder_targets(p: Path):
@@ -60,10 +60,18 @@ def _load_config():
     cfg_path = ROOT / "config" / "ats.yaml"
     cfg_path.parent.mkdir(parents=True, exist_ok=True)
     if not cfg_path.exists():
-        cfg_path.write_text("softmax_tau: 0.5`nrisk_target_sigma: 0.10`ntrading_cost_bps: 5`nalert_mdd_pct: 20`n", encoding="utf-8")
+        cfg_path.write_text(
+            "softmax_tau: 0.5\nrisk_target_sigma: 0.10\ntrading_cost_bps: 5\nalert_mdd_pct: 20\n",
+            encoding="utf-8"
+        )
         print(f"NOTE: created default config at {cfg_path}", file=sys.stderr)
-    data = {"softmax_tau": 0.5, "risk_target_sigma": 0.10, "trading_cost_bps": 5.0, "alert_mdd_pct": 20.0}
-    for line in cfg_path.read_text(encoding='utf-8').splitlines():
+    data = {
+        "softmax_tau": 0.5,
+        "risk_target_sigma": 0.10,
+        "trading_cost_bps": 5.0,
+        "alert_mdd_pct": 20.0,
+    }
+    for line in cfg_path.read_text(encoding="utf-8").splitlines():
         line = line.strip()
         if not line or line.startswith("#") or ":" not in line: continue
         k, v = [x.strip() for x in line.split(":", 1)]
@@ -86,7 +94,7 @@ def _weights_from_scores(symbols, tau: float, sigma: float):
 
 # ---------- perf (writes gross & net) ----------
 def _perf_compute_and_write(date_str: str):
-    d = datetime.strptime(date_str, '%Y-%m-%d').date()
+    d = datetime.strptime(date_str, "%Y-%m-%d").date()
     d1 = d + timedelta(days=1)
     targets_path = ROOT / "targets" / f"{d.isoformat()}.csv"
     returns_path = ROOT / "returns" / f"{d1.isoformat()}.csv"
@@ -105,23 +113,23 @@ def _perf_compute_and_write(date_str: str):
     gross = 0.0
     for row in t_rows:
         try:
-            s = row[t_sym]; w = float(row[w_col]); r = rmap.get(s)
-            if r is None: continue
-            gross += w * r
+            s = row[t_sym]; w = float(row[w_col]); rr = rmap.get(s)
+            if rr is None: continue
+            gross += w * rr
         except: continue
     tc_bps = float(_load_config().get("trading_cost_bps", 0.0))
     net = gross - tc_bps/10000.0
-    out = {'date': d.isoformat(), 'gross_return': gross, 'net_return': net}
+    out = {"date": d.isoformat(), "gross_return": gross, "net_return": net}
     out_path = ROOT / "performance" / f"{d.isoformat()}.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    with out_path.open('w', encoding='utf-8') as f:
-        json.dump(out, f, ensure_ascii=False, separators=(',', ':'))
+    with out_path.open("w", encoding="utf-8") as f:
+        json.dump(out, f, ensure_ascii=False, separators=(",", ":"))
     return gross
 
 def _get_rnet_for_date(date_str: str) -> float:
     p = ROOT / "performance" / f"{date_str}.json"
     try:
-        with p.open(encoding='utf-8') as f: j = json.load(f)
+        with p.open(encoding="utf-8") as f: j = json.load(f)
         return float(j.get("net_return", j.get("gross_return", 0.0)))
     except Exception:
         return 0.0
@@ -132,7 +140,7 @@ def _update_equity_csv(date_str: str, r: float):
     p.parent.mkdir(parents=True, exist_ok=True)
     rows = []
     if p.exists():
-        with p.open(newline='', encoding='utf-8') as f:
+        with p.open(newline="", encoding="utf-8") as f:
             rows = list(csv.DictReader(f))
     prev = 1.0
     if rows:
@@ -149,7 +157,7 @@ def _update_equity_csv(date_str: str, r: float):
         else:
             prev = last_eq
     eq = prev * (1.0 + float(r))
-    with p.open('w', newline='', encoding='utf-8') as f:
+    with p.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f); w.writerow(["date","r","equity"])
         for row in rows:
             w.writerow([row.get("date",""), row.get("r",""), row.get("equity","")])
@@ -189,19 +197,19 @@ def _rebuild_equity_from_json():
     eq = 1.0; rows = []
     for fp in files:
         try:
-            with fp.open(encoding='utf-8') as f: j = json.load(f)
-            d = (j.get('date') or fp.stem)
-            r = float(j.get('net_return', j.get('gross_return', 0.0)))
+            with fp.open(encoding="utf-8") as f: j = json.load(f)
+            d = (j.get("date") or fp.stem)
+            r = float(j.get("net_return", j.get("gross_return", 0.0)))
             eq *= (1.0 + r)
             rows.append((d, r, eq))
         except Exception:
             continue
     out = perf / "equity.csv"
-    with out.open('w', newline='', encoding='utf-8') as f:
+    with out.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f); w.writerow(["date","r","equity"])
         for d, r, e in rows: w.writerow([d, _float_str(r), _float_str(e)])
 
-# ---------- stats/summary ----------
+# ---------- stats ----------
 def _compute_stats():
     p = ROOT / "performance" / "equity.csv"
     if not p.exists(): raise FileNotFoundError("performance/equity.csv not found")
@@ -220,13 +228,13 @@ def _compute_stats():
         if dd < mdd: mdd = dd
     out = {"days": n, "cum": cum, "vol": vol, "mdd": mdd}
     out_path = ROOT / "performance" / "stats.json"
-    with out_path.open('w', encoding='utf-8') as f:
-        json.dump(out, f, ensure_ascii=False, separators=(',', ':'))
+    with out_path.open("w", encoding="utf-8") as f:
+        json.dump(out, f, ensure_ascii=False, separators=(",", ":"))
     return n, cum, vol, mdd
 
 # ---------- commands ----------
 def cmd_run(date_str: str) -> int:
-    d = datetime.strptime(date_str, '%Y-%m-%d').date()
+    d = datetime.strptime(date_str, "%Y-%m-%d").date()
     cfg = _load_config()
     print(f"Using tau={float(cfg.get('softmax_tau',0.5))}; sigma_target={float(cfg.get('risk_target_sigma',0.10))}")
     d1 = d + timedelta(days=1)
@@ -236,7 +244,7 @@ def cmd_run(date_str: str) -> int:
         symbols = sorted({r.get(sy) for r in rr if r.get(sy)})
     else:
         symbols = ["AAA","BBB","CCC","DDD"]
-    weights = _weights_from_scores(symbols, float(cfg.get('softmax_tau',0.5)), float(cfg.get('risk_target_sigma',0.10)))
+    weights = _weights_from_scores(symbols, float(cfg.get("softmax_tau",0.5)), float(cfg.get("risk_target_sigma",0.10)))
     _write_csv(ROOT / "targets" / f"{d.isoformat()}.csv", ["symbol","weight"], weights)
     _write_csv(ROOT / "orders" / f"{d.isoformat()}.csv", ["symbol","side","qty","px_ref","tc_est"], [["AAA",1,100,100.0,0.0001],["BBB",-1,100,50.0,0.0001]])
     _write_csv(ROOT / "execution" / f"{d.isoformat()}.csv", ["symbol","filled_qty","avg_px"], [["AAA",100,100.5],["BBB",100,49.8]])
@@ -245,7 +253,7 @@ def cmd_run(date_str: str) -> int:
 def cmd_perf(date_str: str) -> int:
     try: gross = _perf_compute_and_write(date_str)
     except Exception as e: print(f"ERR: {e}", file=sys.stderr); return 1
-    tc = float(_load_config().get('trading_cost_bps',0))/10000.0
+    tc = float(_load_config().get("trading_cost_bps",0))/10000.0
     print(f" Perf {date_str}: r_gross={gross:.6f}; r_net={(gross - tc):.6f}"); return 0
 
 def cmd_daily(date_str: str) -> int:
@@ -269,26 +277,34 @@ def cmd_summary() -> int:
         n, cum, vol, mdd = _compute_stats()
         rows = _read_csv(ROOT / "performance" / "equity.csv"); last = rows[-1]
         d = last.get("date",""); r = float(last.get("r","0")); e = float(last.get("equity","1"))
-    except Exception as e: print(f"ERR: {e}", file=sys.stderr); return 1
-    print(f"Summary: {n} days; Cum={cum:.6f}; Vol={vol:.6f}; MDD={mdd:.6f}; last={d} r={r:.6f} equity={e:.6f}"); return 0
+        cfg = _load_config(); thr = float(cfg.get("alert_mdd_pct", 20.0))
+        mdd_pct = mdd * 100.0
+        alert = "OK" if (-mdd_pct) < thr else f"ALERT (MDD {mdd_pct:.2f}% >= {thr:.2f}%)"
+    except Exception as e:
+        print(f"ERR: {e}", file=sys.stderr); return 1
+    print(f"Summary: {n} days; Cum={cum:.6f}; Vol={vol:.6f}; MDD={mdd:.6f}; last={d} r={r:.6f} equity={e:.6f}; Alert: {alert}")
+    return 0
 
 def cmd_report(date_str: str) -> int:
     try:
         n, cum, vol, mdd = _compute_stats()
         rows = _read_csv(ROOT / "performance" / "equity.csv"); last = rows[-1]
-        d = last.get("date",""); r = float(last.get("r","0")); e = float(last.get("equity","1"))
-        summary = f"Summary: {n} days; Cum={cum:.6f}; Vol={vol:.6f}; MDD={mdd:.6f}; last={d} r={r:.6f} equity={e:.6f}"
-        out = ROOT / "docs" / f"report_{date_str}.md"
-        out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(f"# Report {date_str}\n\n```\n{summary}\n```\n\n![Equity curve](docs/equity.png)\n", encoding='utf-8')
+        d_last = last.get("date",""); r_last = float(last.get("r","0")); e_last = float(last.get("equity","1"))
+        cfg = _load_config(); thr = float(cfg.get("alert_mdd_pct", 20.0))
+        mdd_pct = mdd * 100.0
+        alert = "OK" if (-mdd_pct) < thr else f"ALERT (MDD {mdd_pct:.2f}% >= {thr:.2f}%)"
+        summary_line = f"Summary: {n} days; Cum={cum:.6f}; Vol={vol:.6f}; MDD={mdd:.6f}; last={d_last} r={r_last:.6f} equity={e_last:.6f}; Alert: {alert}"
+        out_path = ROOT / "docs" / f"report_{date_str}.md"
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(f"# Report {date_str}\n\n```\n{summary_line}\n```\n\n![Equity curve](docs/equity.png)\n", encoding="utf-8")
     except Exception as e:
         print(f"ERR: {e}", file=sys.stderr); return 1
     print(f" Report {date_str} written"); return 0
 
 def cmd_backfill(date_from: str, date_to: str) -> int:
     try:
-        d0 = datetime.strptime(date_from, '%Y-%m-%d').date()
-        d1 = datetime.strptime(date_to, '%Y-%m-%d').date()
+        d0 = datetime.strptime(date_from, "%Y-%m-%d").date()
+        d1 = datetime.strptime(date_to, "%Y-%m-%d").date()
     except ValueError:
         print("ERR: --from/--to must be YYYY-MM-DD", file=sys.stderr); return 2
     if d0 > d1:
@@ -298,7 +314,6 @@ def cmd_backfill(date_from: str, date_to: str) -> int:
         rc = cmd_daily(f"{cur}")
         if rc != 0: return rc
         cur += timedelta(days=1)
-    # guarantee CSV reflects NET series from JSON
     _rebuild_equity_from_json()
     _plot_equity_png()
     return 0
@@ -310,24 +325,23 @@ def cmd_doctor() -> int:
     print("HEALTH: PASS"); return 0
 
 def main():
-    p = argparse.ArgumentParser(prog='ats'); sub = p.add_subparsers(dest='cmd', required=True)
-    sub.add_parser('run', help='produce targets/orders/execution').add_argument('--date', required=True)
-    sub.add_parser('perf', help='compute daily gross/net and write json').add_argument('--date', required=True)
-    sub.add_parser('daily', help='run + perf + equity update (NET)').add_argument('--date', required=True)
-    sub.add_parser('stats', help='print Cum/Vol/MDD and save to performance/stats.json')
-    sub.add_parser('summary', help='print one-line summary from equity.csv + stats.json')
-    sub.add_parser('report', help='write docs/report_<date>.md with summary + chart').add_argument('--date', required=True)
-    bf = sub.add_parser('backfill', help='daily for each date in range'); bf.add_argument('--from', dest='date_from', required=True); bf.add_argument('--to', dest='date_to', required=True)
-    sub.add_parser('doctor', help='health check')
+    p = argparse.ArgumentParser(prog="ats"); sub = p.add_subparsers(dest="cmd", required=True)
+    sub.add_parser("run", help="produce targets/orders/execution").add_argument("--date", required=True)
+    sub.add_parser("perf", help="compute daily gross/net and write json").add_argument("--date", required=True)
+    sub.add_parser("daily", help="run + perf + equity update (NET)").add_argument("--date", required=True)
+    sub.add_parser("stats", help="print Cum/Vol/MDD and save to performance/stats.json")
+    sub.add_parser("summary", help="print one-line summary from equity.csv + stats.json")
+    sub.add_parser("report", help="write docs/report_<date>.md with summary + chart").add_argument("--date", required=True)
+    bf = sub.add_parser("backfill", help="daily for each date in range"); bf.add_argument("--from", dest="date_from", required=True); bf.add_argument("--to", dest="date_to", required=True)
+    sub.add_parser("doctor", help="health check")
     a = p.parse_args()
-    if a.cmd=='run': sys.exit(cmd_run(a.date))
-    if a.cmd=='perf': sys.exit(cmd_perf(a.date))
-    if a.cmd=='daily': sys.exit(cmd_daily(a.date))
-    if a.cmd=='stats': sys.exit(cmd_stats())
-    if a.cmd=='summary': sys.exit(cmd_summary())
-    if a.cmd=='report': sys.exit(cmd_report(a.date))
-    if a.cmd=='backfill': sys.exit(cmd_backfill(a.date_from, a.date_to))
-    if a.cmd=='doctor': sys.exit(cmd_doctor())
+    if a.cmd=="run": sys.exit(cmd_run(a.date))
+    if a.cmd=="perf": sys.exit(cmd_perf(a.date))
+    if a.cmd=="daily": sys.exit(cmd_daily(a.date))
+    if a.cmd=="stats": sys.exit(cmd_stats())
+    if a.cmd=="summary": sys.exit(cmd_summary())
+    if a.cmd=="report": sys.exit(cmd_report(a.date))
+    if a.cmd=="backfill": sys.exit(cmd_backfill(a.date_from, a.date_to))
+    if a.cmd=="doctor": sys.exit(cmd_doctor())
 
-if __name__ == '__main__': main()
-
+if __name__ == "__main__": main()
