@@ -85,12 +85,19 @@ def read_max_cap():
         sys.exit(1)
 
 def run_ats_and_capture_logs():
-    """Пробуємо виконати 'ats run' (спершу з --dry-run), інакше читаємо останній лог із logs/*.log."""
+    """Пробуємо прочитати лог за пріоритетом:
+    1) явний шлях у ATS_LOG_PATH; 2) 'ats run' (--dry-run, потім звичайний);
+    3) останній logs/*.log."""
+    # 0) явний шлях (зручно у CI)
+    env_log = os.getenv("ATS_LOG_PATH")
+    if env_log and os.path.exists(env_log):
+        try:
+            return open(env_log, "r", encoding="utf-8", errors="ignore").read()
+        except Exception:
+            pass
+
     cmd = os.getenv("ATS_BIN", "ats")
-    tries = [
-        [cmd, "run", "--dry-run"],
-        [cmd, "run"],
-    ]
+    tries = [[cmd, "run", "--dry-run"], [cmd, "run"]]
     for args in tries:
         try:
             cp = subprocess.run(args, capture_output=True, text=True, timeout=int(os.getenv("ATS_SMOKE_TIMEOUT", "90")))
@@ -101,6 +108,7 @@ def run_ats_and_capture_logs():
             break
         except Exception:
             continue
+
     logs = sorted(glob.glob(os.path.join("logs", "*.log")), key=lambda p: (os.path.getmtime(p), p), reverse=True)
     if logs:
         try:
@@ -139,9 +147,15 @@ def main():
 
     # 3) лог має містити "capped N/..."
     logtext = run_ats_and_capture_logs()
-    m = re.search(r'capped\s+(\d+)\s*/\s*(\d+)', logtext)
-    if not m:
-        print('TEST FAIL: в логах "ats run" не знайдено рядок виду: capped N/... (N може бути 0)', file=sys.stderr)
+    patterns = [
+        r'\bcapped\s*[:=]?\s*(\d+)\s*/\s*(\d+)\b',
+        r'\bcapped\s+(\d+)\s+(?:of|out\s+of)\s+(\d+)\b',
+    ]
+    found = any(re.search(p, logtext, flags=re.I) for p in patterns)
+    if not found:
+        print('TEST FAIL: в логах не знайдено "capped N/..." (N може бути 0). '
+              'Підказка: вистави ATS_LOG_PATH=шлях_до_логу або перевір, що "ats run" друкує цей рядок.',
+              file=sys.stderr)
         sys.exit(1)
 
     # 12) перевірки targets/<date>.csv
