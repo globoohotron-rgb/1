@@ -314,7 +314,7 @@ def cmd_daily(date_str: str) -> int:
         _write_run_manifest(date_str, rnet)
     except Exception as e:
         print(f"ERR: {e}", file=sys.stderr); return 1
-    print(f"Daily {date_str}: weights OK; r_net={rnet:.6f}"); return 0
+    print(f" Daily {date_str}: weights OK; r_net={rnet:.6f}"); return 0
 
 def cmd_stats() -> int:
     try: n, cum, vol, mdd = _compute_stats()
@@ -400,6 +400,7 @@ def cmd_today() -> int:
     except Exception:
         today = datetime.utcnow().date()
     return cmd_daily(today.isoformat())
+
 
 
 
