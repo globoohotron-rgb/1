@@ -368,6 +368,13 @@ def cmd_doctor() -> int:
     print("HEALTH: PASS"); return 0
 
 # --------------- main ---------------
+def cmd_today() -> int:
+    try:
+        from zoneinfo import ZoneInfo
+        today = datetime.now(ZoneInfo('Europe/Stockholm')).date()
+    except Exception:
+        today = datetime.utcnow().date()
+    return cmd_daily(today.isoformat())
 def main():
     p = argparse.ArgumentParser(prog="ats"); sub = p.add_subparsers(dest="cmd", required=True)
     sub.add_parser("run", help="produce targets/orders/execution").add_argument("--date", required=True)
@@ -384,6 +391,7 @@ def main():
     if a.cmd=="perf": sys.exit(cmd_perf(a.date))
     if a.cmd=="daily": sys.exit(cmd_daily(a.date))
     if a.cmd=="today": sys.exit(cmd_today())
+
     if a.cmd=="stats": sys.exit(cmd_stats())
     if a.cmd=="summary": sys.exit(cmd_summary())
     if a.cmd=="report": sys.exit(cmd_report(a.date))
@@ -391,18 +399,6 @@ def main():
     if a.cmd=="doctor": sys.exit(cmd_doctor())
 
 if __name__ == "__main__": main()
-def cmd_today() -> int:
-    # Europe/Stockholm today; fallback to UTC if zoneinfo is unavailable
-    try:
-        from zoneinfo import ZoneInfo
-        tz = ZoneInfo('Europe/Stockholm')
-        today = datetime.now(tz).date()
-    except Exception:
-        today = datetime.utcnow().date()
-    return cmd_daily(today.isoformat())
-
-
-
 
 
 
