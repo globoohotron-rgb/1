@@ -11,7 +11,7 @@ if (Get-Command py -ErrorAction SilentlyContinue) {
   exit 127
 }
 exit $LASTEXITCODE
-# === universe filter hook (auto-injected) ===
+
 if ($args -contains "run") {
     $date = $null
     $i = [Array]::IndexOf($args, "--date")
@@ -20,7 +20,7 @@ if ($args -contains "run") {
     python tools\apply_universe.py --date $date
 }
 
-# === post-run: guaranteed universe filter log (PS-only) ===
+
 function Invoke-PrintUniverseLine {
     param([string]$Date)
     if (-not $Date -or $Date -eq '') {
@@ -41,4 +41,6 @@ if ($__i -ge 0 -and $__i + 1 -lt $args.Length) { $__date = $args[$__i + 1] }
 if ( ($args -and $args[0] -eq 'run') -or ($args -contains 'run') ) {
     Invoke-PrintUniverseLine -Date $__date
 }
+
+
 
