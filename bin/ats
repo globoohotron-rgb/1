@@ -373,6 +373,7 @@ def main():
     sub.add_parser("run", help="produce targets/orders/execution").add_argument("--date", required=True)
     sub.add_parser("perf", help="compute daily gross/net and write json").add_argument("--date", required=True)
     sub.add_parser("daily", help="run + perf + equity update (NET)").add_argument("--date", required=True)
+    sub.add_parser("today", help="run daily for Europe/Stockholm today")
     sub.add_parser("stats", help="print Cum/Vol/MDD and save to performance/stats.json")
     sub.add_parser("summary", help="print one-line summary from equity.csv + stats.json")
     sub.add_parser("report", help="write docs/report_<date>.md with summary + chart").add_argument("--date", required=True)
@@ -382,6 +383,7 @@ def main():
     if a.cmd=="run": sys.exit(cmd_run(a.date))
     if a.cmd=="perf": sys.exit(cmd_perf(a.date))
     if a.cmd=="daily": sys.exit(cmd_daily(a.date))
+    if a.cmd=="today": sys.exit(cmd_today())
     if a.cmd=="stats": sys.exit(cmd_stats())
     if a.cmd=="summary": sys.exit(cmd_summary())
     if a.cmd=="report": sys.exit(cmd_report(a.date))
@@ -389,3 +391,14 @@ def main():
     if a.cmd=="doctor": sys.exit(cmd_doctor())
 
 if __name__ == "__main__": main()
+def cmd_today() -> int:
+    # Europe/Stockholm today; fallback to UTC if zoneinfo is unavailable
+    try:
+        from zoneinfo import ZoneInfo
+        tz = ZoneInfo('Europe/Stockholm')
+        today = datetime.now(tz).date()
+    except Exception:
+        today = datetime.utcnow().date()
+    return cmd_daily(today.isoformat())
+
+
