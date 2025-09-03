@@ -85,10 +85,7 @@ def read_max_cap():
         sys.exit(1)
 
 def run_ats_and_capture_logs():
-    """Пробуємо прочитати лог за пріоритетом:
-    1) явний шлях у ATS_LOG_PATH; 2) 'ats run' (--dry-run, потім звичайний);
-    3) останній logs/*.log."""
-    # 0) явний шлях (зручно у CI)
+    """Порядок пошуку логу: ATS_LOG_PATH -> 'ats run' -> останній logs/*.log."""
     env_log = os.getenv("ATS_LOG_PATH")
     if env_log and os.path.exists(env_log):
         try:
@@ -118,6 +115,9 @@ def run_ats_and_capture_logs():
     return ""
 
 def latest_targets_csv():
+    env_tgt = os.getenv("TARGETS_CSV_PATH")
+    if env_tgt and os.path.exists(env_tgt):
+        return env_tgt
     files = sorted(glob.glob(os.path.join("targets", "*.csv")), key=lambda p: (os.path.getmtime(p), p), reverse=True)
     return files[0] if files else None
 
