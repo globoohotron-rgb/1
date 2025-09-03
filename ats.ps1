@@ -1,2 +1,2 @@
-﻿# thin delegate: just pass args to Python entrypoint
+﻿# thin delegate: forward to Python entrypoint
 python bin\ats $args

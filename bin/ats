@@ -1,85 +1,6 @@
 ﻿#!/usr/bin/env python3
-# bin/ats — друк діагностики universe + запуск побудови портфеля
-import os, sys, csv, re, argparse, subprocess
-
-def _yaml_get(text, key):
-    m = re.search(rf'^\s*{re.escape(key)}\s*:\s*([^\s#]+)', text, flags=re.M)
-    return m.group(1).strip() if m else None
-
-def _to_float(x, default=0.0):
-    try: return float(str(x).replace(',', '').strip())
-    except: return default
-
-def _to_bool(x):
-    return str(x).strip().lower() in ('1','true','yes','y','t')
-
-def read_min_cap():
-    path = os.path.join('config','ats.yaml')
-    if not os.path.exists(path): return 0.0
-    txt = open(path, 'r', encoding='utf-8').read()
-    raw = os.getenv('MIN_CAP_USD') or _yaml_get(txt, 'min_cap_usd') or '0'
-    try: return float(raw)
-    except: return 0.0
-
-def count_alpha(path):
-    if not os.path.exists(path): return 0
-    with open(path, 'r', encoding='utf-8', newline='') as f:
-        return sum(1 for _ in csv.DictReader(f))
-
-def try_filter_NM(alpha_path, uni_path, min_cap):
-    """Повертає (ok, N, M, reason). ok=False -> друкуємо SKIP з reason."""
-    if not os.path.exists(alpha_path):
-        return (False, 0, 0, 'alpha not found')
-    N = count_alpha(alpha_path)
-
-    if not os.path.exists(uni_path):
-        return (False, N, N, 'universe not found')
-
-    try:
-        with open(alpha_path, 'r', encoding='utf-8', newline='') as fa:
-            ra = csv.DictReader(fa)
-            a_names = ra.fieldnames or []
-            symA = next((c for c in ['symbol','ticker','secid','asset'] if c in a_names or c.upper() in a_names or c.title() in a_names), None)
-            if not symA:
-                lower = {n.lower(): n for n in a_names}
-                for c in ['symbol','ticker','secid','asset']:
-                    if c in lower: symA = lower[c]; break
-            if not symA: return (False, N, N, 'missing alpha symbol')
-
-            alpha_map = {}
-            for r in ra:
-                s = (r[symA] or '').strip().upper()
-                if s: alpha_map[s] = True
-
-        with open(uni_path, 'r', encoding='utf-8', newline='') as fu:
-            ru = csv.DictReader(fu)
-            u_names = ru.fieldnames or []
-            def pick(cands):
-                for c in cands:
-                    if c in u_names: return c
-                lower = {n.lower(): n for n in u_names}
-                for c in cands:
-                    if c in lower: return lower[c]
-                return None
-            symU = pick(['symbol','ticker','secid','asset'])
-            actU = pick(['is_active','active'])
-            capU = pick(['cap_usd','market_cap_usd','mkt_cap','cap'])
-            if not symU or not actU or not capU:
-                return (False, N, N, 'missing required columns')
-
-            M = 0
-            for r in ru:
-                s = (r[symU] or '').strip().upper()
-                if not s: continue
-                active = _to_bool(r[actU])
-                cap = _to_float(r[capU], 0.0)
-                if active and cap >= min_cap and s in alpha_map:
-                    M += 1
-        if M == 0:
-            return (False, N, N, 'empty after filter')
-        return (True, N, M, '')
-    except Exception:
-        return (False, N, N, 'diagnostic error')
+# bin/ats — друкує universe path= exists= і делегує в інженерну побудову
+import os, sys, argparse, subprocess
 
 def main():
     ap = argparse.ArgumentParser(add_help=False)
@@ -88,26 +9,12 @@ def main():
     args, rest = ap.parse_known_args()
 
     if args.cmd != 'run':
-        # передаємо все як є (інші підкоманди, якщо є)
         return subprocess.call(['python', 'tools\\apply_universe.py'] + sys.argv[1:])
 
     date = args.date or os.getenv('ATS_DATE') or __import__('datetime').date.today().strftime('%Y-%m-%d')
+    uni_path = os.path.join('universe', f'{date}.csv')
+    print(f'universe path={os.path.abspath(uni_path)} exists={os.path.exists(uni_path)}')
 
-    alpha_path = os.path.join('alpha', f'{date}.csv')
-    uni_path   = os.path.join('universe', f'{date}.csv')
-
-    # 1) ДІАГНОСТИКА ШЛЯХУ
-    uni_abs = os.path.abspath(uni_path)
-    print(f'universe path={uni_abs} exists={os.path.exists(uni_path)}')
-
-    # 2) ДІАГНОСТИКА ФІЛЬТРА
-    ok, N, M, reason = try_filter_NM(alpha_path, uni_path, read_min_cap())
-    if ok:
-        print(f'universe filter: {N}{M}')
-    else:
-        print(f'universe filter: {N}{N} (SKIP: {reason})')
-
-    # 3) Далі  побудова портфеля (фільтр + ваги)
     return subprocess.call(['python', 'tools\\apply_universe.py', '--date', date])
 
 if __name__ == '__main__':
