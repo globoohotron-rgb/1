@@ -5,6 +5,5 @@ risk_target_sigma: 0.10
 trading_cost_bps: 5
 
 alert_mdd_pct: 20
-
-
+max_weight_pct: 0.25
 

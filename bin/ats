@@ -62,7 +62,7 @@ def _load_config():
     cfg_path.parent.mkdir(parents=True, exist_ok=True)
     if not cfg_path.exists():
         cfg_path.write_text(
-            "softmax_tau: 0.5\nrisk_target_sigma: 0.10\ntrading_cost_bps: 5\nalert_mdd_pct: 20\n",
+            "softmax_tau: 0.5\nrisk_target_sigma: 0.10\ntrading_cost_bps: 5\nalert_mdd_pct: 20\nmax_weight_pct: 0.25\n",
             encoding="utf-8"
         )
         print(f"NOTE: created default config at {cfg_path}", file=sys.stderr)
@@ -284,7 +284,10 @@ def _compute_stats():
 def cmd_run(date_str: str) -> int:
     d = datetime.strptime(date_str, "%Y-%m-%d").date()
     cfg = _load_config()
-    print(f"Using tau={float(cfg.get('softmax_tau',0.5))}; sigma_target={float(cfg.get('risk_target_sigma',0.10))}")
+    tau = float(cfg.get("softmax_tau", 0.5))
+    sigma = float(cfg.get("risk_target_sigma", 0.10))
+    cap = float(cfg.get("max_weight_pct", 0.25))
+    print(f"Using tau={tau}; sigma_target={sigma}; cap={cap}")
     d1 = d + timedelta(days=1)
     ret_path = ROOT / "returns" / f"{d1.isoformat()}.csv"
     if ret_path.exists():
@@ -292,7 +295,19 @@ def cmd_run(date_str: str) -> int:
         symbols = sorted({r.get(sy) for r in rr if r.get(sy)})
     else:
         symbols = ["AAA","BBB","CCC","DDD"]
-    weights = _weights_from_scores(symbols, float(cfg.get("softmax_tau",0.5)), float(cfg.get("risk_target_sigma",0.10)))
+    raw = _weights_from_scores(symbols, tau, sigma)
+    syms = [s for s,_ in raw]
+    vals = [float(w) for _,w in raw]
+    capped_count = 0
+    capped = []
+    for w in vals:
+        cw = max(-cap, min(cap, w))
+        if abs(cw - w) > 1e-12: capped_count += 1
+        capped.append(cw)
+    denom = sum(abs(x) for x in capped) or 1.0
+    norm = [x/denom for x in capped]
+    weights = list(zip(syms, norm))
+    print(f"capped {capped_count}/{len(syms)}")
     _write_csv(ROOT / "targets" / f"{d.isoformat()}.csv", ["symbol","weight"], weights)
     _write_csv(ROOT / "orders" / f"{d.isoformat()}.csv", ["symbol","side","qty","px_ref","tc_est"], [["AAA",1,100,100.0,0.0001],["BBB",-1,100,50.0,0.0001]])
     _write_csv(ROOT / "execution" / f"{d.isoformat()}.csv", ["symbol","filled_qty","avg_px"], [["AAA",100,100.5],["BBB",100,49.8]])
@@ -399,6 +414,7 @@ def main():
     if a.cmd=="doctor": sys.exit(cmd_doctor())
 
 if __name__ == "__main__": main()
+
 
 
 
