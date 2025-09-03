@@ -1,3 +1,5 @@
 softmax_tau: 0.5
 risk_target_sigma: 0.10
 
+
+trading_cost_bps: 5

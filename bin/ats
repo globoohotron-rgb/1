@@ -76,7 +76,10 @@ def _perf_compute_and_write(date_str: str):
             if r is None: continue
             gross += w * r
         except: continue
-    out = {'date': d.isoformat(), 'gross_return': gross}
+    cfg_local = _load_config()
+    tc_bps = float(cfg_local.get('trading_cost_bps', 0))
+    net = gross - (tc_bps/10000.0)
+    out = {'date': d.isoformat(), 'gross_return': gross, 'net_return': net}
     out_path = ROOT / "performance" / f"{d.isoformat()}.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with out_path.open('w', encoding='utf-8') as f:
@@ -177,9 +180,9 @@ def _load_config():
     cfg_path = ROOT / "config" / "ats.yaml"
     cfg_path.parent.mkdir(parents=True, exist_ok=True)
     if not cfg_path.exists():
-        cfg_path.write_text("softmax_tau: 0.5\nrisk_target_sigma: 0.10\n", encoding="utf-8")
+        cfg_path.write_text("softmax_tau: 0.5`nrisk_target_sigma: 0.10`ntrading_cost_bps: 5`n", encoding="utf-8")
         print(f"NOTE: created default config at {cfg_path}", file=sys.stderr)
-    data = {"softmax_tau": 0.5, "risk_target_sigma": 0.10}
+    data = {"softmax_tau": 0.5, "risk_target_sigma": 0.10, "trading_cost_bps": 5.0}
     for line in cfg_path.read_text(encoding="utf-8").splitlines():
         line = line.strip()
         if not line or line.startswith("#") or ":" not in line: continue
@@ -231,7 +234,7 @@ def cmd_run(date_str: str) -> int:
 def cmd_perf(date_str: str) -> int:
     try: gross = _perf_compute_and_write(date_str)
     except Exception as e: print(f"ERR: {e}", file=sys.stderr); return 1
-    print(f" Perf {date_str}: r={gross:.6f}"); return 0
+    cfg=_load_config(); tc=float(cfg.get('trading_cost_bps',0))/10000.0; print(f" Perf {date_str}: r_gross={gross:.6f}; r_net={(gross - tc):.6f}"); return 0
 
 def cmd_daily(date_str: str) -> int:
     if cmd_run(date_str) != 0: return 1
@@ -340,4 +343,7 @@ def main():
     if a.cmd=='doctor': sys.exit(cmd_doctor())
 
 if __name__ == '__main__': main()
+
+
+
 
