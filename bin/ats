@@ -257,7 +257,8 @@ def cmd_perf(date_str: str) -> int:
     print(f" Perf {date_str}: r_gross={gross:.6f}; r_net={(gross - tc):.6f}"); return 0
 
 def cmd_daily(date_str: str) -> int:
-    if cmd_run(date_str) != 0: return 1
+    if cmd_run(date_str) != 0:
+        return 1
     try:
         _perf_compute_and_write(date_str)
         rnet = _get_rnet_for_date(date_str)
@@ -265,8 +266,10 @@ def cmd_daily(date_str: str) -> int:
         _plot_equity_png()
         _write_run_manifest(date_str, rnet)
     except Exception as e:
-        print(f"ERR: {e}", file=sys.stderr); return 1
-    print(f"✓ Daily {date_str}: weights OK; r_net={rnet:.6f}"); return 0
+        print(f"ERR: {e}", file=sys.stderr)
+        return 1
+    print(f" Daily {date_str}: weights OK; r_net={rnet:.6f}")
+    return 0
 
 def cmd_stats() -> int:
     try: n, cum, vol, mdd = _compute_stats()
@@ -419,3 +422,4 @@ def _write_run_manifest(date_str: str, r_net: float) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with out_path.open("w", encoding="utf-8") as f:
         json.dump(manifest, f, ensure_ascii=False, separators=(",", ":"))
+
