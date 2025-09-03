@@ -94,17 +94,14 @@ def _perf_compute_and_write(date_str: str):
         _ensure_placeholder_targets(targets_path); print(f"NOTE: created placeholder {targets_path}", file=sys.stderr)
     if not returns_path.exists():
         _ensure_placeholder_returns(returns_path); print(f"NOTE: created placeholder {returns_path}", file=sys.stderr)
-
     t_rows = _read_csv(targets_path); r_rows = _read_csv(returns_path)
     if not t_rows or not r_rows: raise RuntimeError("empty CSV(s)")
     t_sym = _pick_symbol_key(t_rows[0].keys()); w_col = _pick_weight_key(t_rows)
     r_sym = _pick_symbol_key(r_rows[0].keys()); r_col = _pick_return_key(r_rows)
-
     rmap = {}
     for row in r_rows:
         try: rmap[row[r_sym]] = float(row[r_col])
         except: pass
-
     gross = 0.0
     for row in t_rows:
         try:
@@ -112,7 +109,6 @@ def _perf_compute_and_write(date_str: str):
             if r is None: continue
             gross += w * r
         except: continue
-
     tc_bps = float(_load_config().get("trading_cost_bps", 0.0))
     net = gross - tc_bps/10000.0
     out = {'date': d.isoformat(), 'gross_return': gross, 'net_return': net}
