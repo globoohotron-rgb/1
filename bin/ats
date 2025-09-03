@@ -254,3 +254,25 @@ def main():
     if a.cmd=='backfill': sys.exit(cmd_backfill(a.date_from,a.date_to))
     if a.cmd=='doctor': sys.exit(cmd_doctor())
 if __name__=='__main__': main()
+
+def _rebuild_equity_from_json():
+    perf = ROOT / 'performance'
+    files = sorted([p for p in perf.glob('*.json') if p.name != 'stats.json'])
+    eq = 1.0
+    rows = []
+    for fp in files:
+        try:
+            with fp.open(encoding='utf-8') as f:
+                j = json.load(f)
+            d = j.get('date') or fp.stem
+            r = float(j.get('net_return', j.get('gross_return', 0.0)))
+            eq *= (1.0 + r)
+            rows.append((d, r, eq))
+        except Exception:
+            continue
+    out = perf / 'equity.csv'
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with out.open('w', newline='', encoding='utf-8') as f:
+        w = csv.writer(f); w.writerow(['date','r','equity'])
+        for d, r, e in rows:
+            w.writerow([d, _float_str(r), _float_str(e)])
