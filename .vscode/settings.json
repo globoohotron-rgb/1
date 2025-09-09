@@ -2,7 +2,7 @@
   "terminal.integrated.defaultProfile.windows": "PowerShell (No Profile)",
   "terminal.integrated.profiles.windows": {
     "PowerShell (No Profile)": {
-      "path": "C:\\\\Windows\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\powershell.exe",
+      "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
       "args": ["-NoLogo","-NoProfile"]
     }
   },
