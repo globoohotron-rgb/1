@@ -1,0 +1,4 @@
+C:\Volodymyr\ATS v2.0\logs\cleanup\run-20250911-201615\baseline.log
+C:\Volodymyr\ATS v2.0\logs\cleanup\run-20250911-201615\post-quarantine.log
+C:\Volodymyr\ATS v2.0\logs\cleanup\run-20250911-201640\baseline.log
+C:\Volodymyr\ATS v2.0\logs\cleanup\run-20250911-201640\post-quarantine.log
