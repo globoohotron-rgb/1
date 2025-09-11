@@ -95,7 +95,9 @@ foreach($section in $patterns.Keys){
   $art = $manifest.sections.$section.artifacts
   if ($art.Count -gt 0){
     $evidenceCell = ($art | Select-Object -First 3) -join ', '
-    $exists = Select-String -Path $ledgerPath -Pattern "\|\s*EVIDENCE\s*\|\s*$section\s*\|.*\Q$evidenceCell\E" -Quiet
+    $exists = $escapedEvidence = [regex]::Escape($evidenceCell)
+$pattern = "\|\s*EVIDENCE\s*\|\s*$section\s*\|.*$escapedEvidence"
+$exists = Select-String -Path $ledgerPath -Pattern $pattern -Quiet
     if (-not $exists){
       $sum = "Виявлено артефакти ($($art.Count)), state=$($manifest.sections.$section.state)"
       Add-Content -Path $ledgerPath -Value ("| $now | EVIDENCE | $section | $sum | $evidenceCell | <to-fill> |")
@@ -109,4 +111,5 @@ git diff --staged --quiet
 if ($LASTEXITCODE -ne 0) {
   git commit -m "chore(ledger): init accounting + north_star" | Out-Null
 }
+
 
