@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "updated_at": "2025-09-11T16:56:20Z",
+  "updated_at": "2025-09-11T17:05:04Z",
   "north_star": {
     "persona": "трейдер-користувач системи",
     "value": "економить час, виконуючи рутину трейдера замість користувача",
@@ -56,24 +56,6 @@
       ],
       "notes": ""
     },
-    "Portfolio": {
-      "state": "unverified",
-      "owner": "",
-      "artifacts": [],
-      "acceptance_criteria": [],
-      "evidence": [],
-      "notes": ""
-    },
-    "Alpha": {
-      "state": "in-progress",
-      "owner": "",
-      "artifacts": "C:/Volodymyr/ls_universe/ls_universe v2.0/alpha/2025-09-01.csv",
-      "acceptance_criteria": [],
-      "evidence": [
-        "C"
-      ],
-      "notes": ""
-    },
     "Factors": {
       "state": "in-progress",
       "owner": "",
@@ -86,6 +68,14 @@
         "C:/Volodymyr/ls_universe/ls_universe v2.0/factors/2025-08-29.parquet",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/factors/2025-09-01.csv"
       ],
+      "notes": ""
+    },
+    "Monitoring": {
+      "state": "unverified",
+      "owner": "",
+      "artifacts": [],
+      "acceptance_criteria": [],
+      "evidence": [],
       "notes": ""
     },
     "RiskModel": {
@@ -110,14 +100,6 @@
       "evidence": [],
       "notes": ""
     },
-    "Monitoring": {
-      "state": "unverified",
-      "owner": "",
-      "artifacts": [],
-      "acceptance_criteria": [],
-      "evidence": [],
-      "notes": ""
-    },
     "PipelinesQA": {
       "state": "in-progress",
       "owner": "",
@@ -130,6 +112,24 @@
         "C:/Volodymyr/ls_universe/ls_universe v2.0/.github/workflows/ci.yml",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/tests/smoke/test_risk_caps.py"
       ],
+      "notes": ""
+    },
+    "Alpha": {
+      "state": "in-progress",
+      "owner": "",
+      "artifacts": "C:/Volodymyr/ls_universe/ls_universe v2.0/alpha/2025-09-01.csv",
+      "acceptance_criteria": [],
+      "evidence": [
+        "C"
+      ],
+      "notes": ""
+    },
+    "Portfolio": {
+      "state": "unverified",
+      "owner": "",
+      "artifacts": [],
+      "acceptance_criteria": [],
+      "evidence": [],
       "notes": ""
     }
   },
