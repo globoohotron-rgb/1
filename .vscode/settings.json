@@ -1,4 +1,4 @@
-﻿{
+{
   "terminal.integrated.profiles.windows": {
     "PowerShell 7": {
       "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
@@ -8,8 +8,11 @@
   "terminal.integrated.defaultProfile.windows": "PowerShell 7",
 
   // для інтегрованої консолі розширення PowerShell:
-  "powershell.powerShellAdditionalExePaths": [
-    { "versionName": "PowerShell 7 (x64)", "exePath": "C:\\Program Files\\PowerShell\\7\\pwsh.exe" }
-  ],
-  "powershell.powerShellDefaultVersion": "PowerShell 7 (x64)"
+  "powershell.powerShellAdditionalExePaths": {
+    "PowerShell 7 (x64)": "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+  },
+  "powershell.powerShellDefaultVersion": "PowerShell 7 (x64)",
+  
+  "terminal.integrated.shellIntegration.enabled": true,
+  "terminal.integrated.enablePersistentSessions": true
 }
