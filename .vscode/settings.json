@@ -1,10 +1,15 @@
 ﻿{
-  "terminal.integrated.defaultProfile.windows": "PowerShell (No Profile)",
   "terminal.integrated.profiles.windows": {
-    "PowerShell (No Profile)": {
-      "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-      "args": ["-NoLogo","-NoProfile"]
+    "PowerShell 7": {
+      "path": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+      "icon": "terminal-powershell"
     }
   },
-  "terminal.integrated.cwd": "${workspaceFolder}"
+  "terminal.integrated.defaultProfile.windows": "PowerShell 7",
+
+  // для інтегрованої консолі розширення PowerShell:
+  "powershell.powerShellAdditionalExePaths": [
+    { "versionName": "PowerShell 7 (x64)", "exePath": "C:\\Program Files\\PowerShell\\7\\pwsh.exe" }
+  ],
+  "powershell.powerShellDefaultVersion": "PowerShell 7 (x64)"
 }
