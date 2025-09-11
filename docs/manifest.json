@@ -1,0 +1,143 @@
+{
+  "version": "2.0",
+  "updated_at": "2025-09-11T16:44:27Z",
+  "north_star": {
+    "persona": "трейдер-користувач системи",
+    "value": "економить час, виконуючи рутину трейдера замість користувача",
+    "success_1": "сигнал у Telegram зі зображенням графіка та рівнями entry/TP/SL",
+    "success_2": "біржова інтеграція: авто-відкриття та закриття угоди",
+    "path": "бек-тест → стабільний профіт на дистанції → щоденні оновлення"
+  },
+  "sections": {
+    "Alpha": {
+      "state": "in-progress",
+      "owner": "",
+      "artifacts": "C:/Volodymyr/ls_universe/ls_universe v2.0/alpha/2025-09-01.csv",
+      "acceptance_criteria": [],
+      "evidence": [
+        "C"
+      ],
+      "notes": ""
+    },
+    "RiskModel": {
+      "state": "in-progress",
+      "owner": "",
+      "artifacts": [
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/risk_model/beta.parquet",
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/risk_model/scales.json"
+      ],
+      "acceptance_criteria": [],
+      "evidence": [
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/risk_model/beta.parquet",
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/risk_model/scales.json"
+      ],
+      "notes": ""
+    },
+    "Execution": {
+      "state": "in-progress",
+      "owner": "",
+      "artifacts": [
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/execution/2025-09-01.csv",
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/execution/2025-09-02.csv",
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/execution/2025-09-03.csv",
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/execution/fills_2025-09-01.csv",
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/orders/2025-09-01.csv",
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/orders/2025-09-02.csv",
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/orders/2025-09-03.csv",
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/tools/orders_fills.py"
+      ],
+      "acceptance_criteria": [],
+      "evidence": [
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/execution/2025-09-01.csv",
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/execution/2025-09-02.csv",
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/execution/2025-09-03.csv",
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/execution/fills_2025-09-01.csv",
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/orders/2025-09-01.csv"
+      ],
+      "notes": ""
+    },
+    "Infrastructure": {
+      "state": "unverified",
+      "owner": "",
+      "artifacts": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "notes": ""
+    },
+    "PipelinesQA": {
+      "state": "in-progress",
+      "owner": "",
+      "artifacts": [
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/.github/workflows/ci.yml",
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/tests/smoke/test_risk_caps.py"
+      ],
+      "acceptance_criteria": [],
+      "evidence": [
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/.github/workflows/ci.yml",
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/tests/smoke/test_risk_caps.py"
+      ],
+      "notes": ""
+    },
+    "Monitoring": {
+      "state": "unverified",
+      "owner": "",
+      "artifacts": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "notes": ""
+    },
+    "Universe": {
+      "state": "in-progress",
+      "owner": "",
+      "artifacts": [
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/universe/2025-08-22.parquet",
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/universe/2025-08-29.parquet",
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/universe/2025-09-01.csv"
+      ],
+      "acceptance_criteria": [],
+      "evidence": [
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/universe/2025-08-22.parquet",
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/universe/2025-08-29.parquet",
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/universe/2025-09-01.csv"
+      ],
+      "notes": ""
+    },
+    "Factors": {
+      "state": "in-progress",
+      "owner": "",
+      "artifacts": [
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/factors/2025-08-29.parquet",
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/factors/2025-09-01.csv"
+      ],
+      "acceptance_criteria": [],
+      "evidence": [
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/factors/2025-08-29.parquet",
+        "C:/Volodymyr/ls_universe/ls_universe v2.0/factors/2025-09-01.csv"
+      ],
+      "notes": ""
+    },
+    "Data": {
+      "state": "unverified",
+      "owner": "",
+      "artifacts": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "notes": ""
+    },
+    "Portfolio": {
+      "state": "unverified",
+      "owner": "",
+      "artifacts": [],
+      "acceptance_criteria": [],
+      "evidence": [],
+      "notes": ""
+    }
+  },
+  "dod_mvp": [
+    "Е2Е: сигнал → зображення з рівнями → відправка у Telegram",
+    "Backtest ≥ 6 місяців з метриками (win rate, PnL, Sharpe, max drawdown)",
+    "Конфігурований Universe + ≥3 фактори + alpha-комбінатор",
+    "Risk model: розмір позиції, SL/TP, ліміти ризику на угоду/день",
+    "Моніторинг: структурні логи та алерт на фейли пайплайну"
+  ]
+}

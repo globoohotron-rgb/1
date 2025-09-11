@@ -60,16 +60,16 @@ $verifiedNameHint = '(report|results?|metrics|backtest|junit|coverage|success|pa
 
 foreach($section in $patterns.Keys){
   $regexes = $patterns[$section]
-  $matches = @()
+  $found = @()
   foreach($f in $allFiles){
     $rel = Rel $f.FullName
-    foreach($rx in $regexes){ if ($rel -match $rx) { $matches += $rel; break } }
+    foreach($rx in $regexes){ if ($rel -match $rx) { $found += $rel; break } }
   }
-  $matches = $matches | Select-Object -Unique
-  if ($matches.Count -gt 0){
-    $manifest.sections.$section.artifacts = $matches
-    $manifest.sections.$section.evidence = $matches[0..([Math]::Min($matches.Count-1, 4))]
-    $hasVerified = ($matches | Where-Object { $_ -match $verifiedNameHint }).Count -gt 0
+  $found = $found | Select-Object -Unique
+  if ($found.Count -gt 0){
+    $manifest.sections.$section.artifacts = $found
+    $manifest.sections.$section.evidence = $found[0..([Math]::Min($found.Count-1, 4))]
+    $hasVerified = ($found | Where-Object { $_ -match $verifiedNameHint }).Count -gt 0
     $manifest.sections.$section.state = if ($hasVerified) { "verified" } else { "in-progress" }
   }
 }
@@ -109,3 +109,4 @@ git diff --staged --quiet
 if ($LASTEXITCODE -ne 0) {
   git commit -m "chore(ledger): init accounting + north_star" | Out-Null
 }
+
