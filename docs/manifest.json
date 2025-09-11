@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "updated_at": "2025-09-11T17:05:04Z",
+  "updated_at": "2025-09-11T17:20:05Z",
   "north_star": {
     "persona": "трейдер-користувач системи",
     "value": "економить час, виконуючи рутину трейдера замість користувача",
@@ -29,7 +29,11 @@
       "state": "unverified",
       "owner": "",
       "artifacts": [],
-      "acceptance_criteria": [],
+      "acceptance_criteria": [
+        "IaC у репо; reproducible локальний запуск",
+        "CI лінтує/тестує на push",
+        "Secrets поза кодом (env/manager)"
+      ],
       "evidence": [],
       "notes": ""
     },
@@ -46,7 +50,11 @@
         "C:/Volodymyr/ls_universe/ls_universe v2.0/orders/2025-09-03.csv",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/tools/orders_fills.py"
       ],
-      "acceptance_criteria": [],
+      "acceptance_criteria": [
+        "Сигнал → ордер (dry-run) з логами",
+        "Ідемпотентність: повтор не дублює",
+        "Timeouts/retries з backoff"
+      ],
       "evidence": [
         "C:/Volodymyr/ls_universe/ls_universe v2.0/execution/2025-09-01.csv",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/execution/2025-09-02.csv",
@@ -139,5 +147,12 @@
     "Конфігурований Universe + ≥3 фактори + alpha-комбінатор",
     "Risk model: розмір позиції, SL/TP, ліміти ризику на угоду/день",
     "Моніторинг: структурні логи та алерт на фейли пайплайну"
-  ]
+  ],
+  "policy": {
+    "step_owner": "Commander",
+    "max_step_duration_min": 25,
+    "wip_limit": 3,
+    "require_evidence": true,
+    "ask_when_ambiguous": true
+  }
 }
