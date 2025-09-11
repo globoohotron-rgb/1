@@ -23,7 +23,7 @@ function Get-ColName($rows, [string[]]$cands) {
   throw ("columns not found; tried: {0}" -f ($cands -join ", "))
 }
 
-function Parse-Weight([string]$s) {
+function Convert-Weight([string]$s) {
   if ($null -eq $s -or $s -eq "") { return [double]::NaN }
   $t = ($s -replace '\s','') -replace '%',''
   # unify decimal separator -> '.'
@@ -42,18 +42,18 @@ function Parse-Weight([string]$s) {
   return $x
 }
 
-function To-Map($rows, $symCol, $wCol) {
+function Convert-ToMap($rows, $symCol, $wCol) {
   $m = @{}
   foreach ($r in $rows) {
     $sym = [string]$r.$symCol
-    $w = Parse-Weight ([string]$r.$wCol)
+    $w = Convert-Weight ([string]$r.$wCol)
     if ([double]::IsNaN($w)) { throw ("NaN weight for {0}" -f $sym) }
     if ($w -lt 0) { throw ("negative weight for {0}: {1}" -f $sym, $w) }
     $m[$sym] = $w
   }
   return $m
 }
-function Sum-Weights($map) { ($map.Values | Measure-Object -Sum).Sum }
+function Get-WeightsSum($map) { ($map.Values | Measure-Object -Sum).Sum }
 
 # 3) read CSVs
 $t = Import-Csv $tgt
@@ -67,12 +67,12 @@ $fsym = Get-ColName $f @('asset','symbol','ticker','secid','id','isin','bbg')
 $ow   = Get-ColName $o @('weight')
 $fw   = Get-ColName $f @('weight')
 
-$tm = To-Map $t $tsym $ws
-$om = To-Map $o $osym $ow
-$fm = To-Map $f $fsym $fw
+$tm = Convert-ToMap $t $tsym $ws
+$om = Convert-ToMap $o $osym $ow
+$fm = Convert-ToMap $f $fsym $fw
 
 # 4) checks
-$sum = [double](Sum-Weights $tm)
+$sum = [double](Get-WeightsSum $tm)
 if ([math]::Abs($sum - 1.0) -gt 1e-8) { throw ("targets sum != 1 (sum={0})" -f $sum) }
 
 if ($tm.Count -ne $om.Count) { throw ("orders count != targets count ({0} vs {1})" -f $tm.Count, $om.Count) }

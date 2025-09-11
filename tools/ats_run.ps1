@@ -23,14 +23,14 @@ for($i=0; $i -lt $N; $i++){
 }
 $targets | Export-Csv (Join-Path 'targets' ("{0}.csv" -f $Date)) -NoTypeInformation -Encoding UTF8
 
-$orders = $targets | % { [pscustomobject]@{ symbol=$_.symbol; action='BUY'; weight=$_.weight } }
+$orders = $targets | ForEach-Object { [pscustomobject]@{ symbol=$_.symbol; action='BUY'; weight=$_.weight } }
 $orders | Export-Csv (Join-Path 'orders' ("{0}.csv" -f $Date)) -NoTypeInformation -Encoding UTF8
 
-$fills  = $targets | % { [pscustomobject]@{ symbol=$_.symbol; weight_filled=$_.weight } }
+$fills  = $targets | ForEach-Object { [pscustomobject]@{ symbol=$_.symbol; weight_filled=$_.weight } }
 $fills  | Export-Csv (Join-Path 'execution' ("fills_{0}.csv" -f $Date)) -NoTypeInformation -Encoding UTF8
 
-$sum=0.0; $targets | % { $sum += [double]$_.weight }
+$sum=0.0; $targets | ForEach-Object { $sum += [double]$_.weight }
 if([math]::Abs($sum-1.0) -gt 1e-9){ Fail ("Weights sum != 1 (sum={0})" -f $sum) }
 
-Write-Host ("`u2713 ATS run {0} PASS" -f $Date)
+Write-Host ("`u{2713} ATS run {0} PASS" -f $Date)
 exit 0
