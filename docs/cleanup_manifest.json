@@ -1,0 +1,755 @@
+{
+  "updated_at": "2025-09-11T18:16:15Z",
+  "policy": {
+    "stale_months": 12,
+    "large_file_mb": 25
+  },
+  "decisions": [
+    {
+      "path": "C:/Volodymyr/ATS v2.0/ats",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 14,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/ats.cmd",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 3,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/ats.ps1",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 4,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/MILESTONE_2025-09-01.md",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 3,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/pyproject.toml",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 5,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/README.md",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 5,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/RELEASE_NOTES_2025-09-01.md",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 2,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/requirements.txt",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 7,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/scratch.txt",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 2,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/SPEC_ATS.md",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 3,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/STATUS.md",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 5,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/.github/workflows/ci.yml",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 5,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/.vscode/settings.json",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 2,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/alpha/2025-09-01.csv",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 9,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/bin/ats",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 14,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/config/ats.yaml",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 5,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/docs/Acceptance_Matrix.md",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 4,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/docs/AI_ACCESS_CHECK.md",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 3,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/docs/cleanup_manifest.json",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 3,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/docs/cleanup_report.md",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 3,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/docs/CODEMAP.md",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 4,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/docs/equity.png",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 6,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/docs/ledger.md",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 5,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/docs/manifest.json",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 5,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/docs/PLAN_SUMMARY.md",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 3,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/docs/px.parquet",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 6,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/docs/QC_factors_alpha_2025-09-01.md",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 4,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/docs/QC_risk_portfolio_2025-09-01.md",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 3,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/docs/QC_universe_2025-09-01.md",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 4,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/docs/REPO_AUDIT_2025-09-01.md",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 3,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/docs/REPO_STRUCTURE.md",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 4,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/docs/report_2025-09-02.md",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 2,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/docs/report_2025-09-03.md",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 2,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/docs/SYNC_MISSING.md",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 4,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/execution/2025-09-01.csv",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 9,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/execution/2025-09-02.csv",
+      "action": "QUARANTINE",
+      "reason": "duplicate(hash=0FDECF4B)",
+      "confidence": 0.8,
+      "refs": 4,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/execution/2025-09-03.csv",
+      "action": "QUARANTINE",
+      "reason": "duplicate(hash=0FDECF4B)",
+      "confidence": 0.8,
+      "refs": 4,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/execution/fills_2025-09-01.csv",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 6,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/factors/2025-08-29.parquet",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 6,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/factors/2025-09-01.csv",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 9,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/ops/bootstrap-runner.ps1",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 3,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/ops/ensure-run_ingest_safe.ps1",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 3,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/ops/run-safe.ps1",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 2,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/orders/2025-09-01.csv",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 9,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/orders/2025-09-02.csv",
+      "action": "QUARANTINE",
+      "reason": "duplicate(hash=CC09C062)",
+      "confidence": 0.8,
+      "refs": 4,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/orders/2025-09-03.csv",
+      "action": "QUARANTINE",
+      "reason": "duplicate(hash=CC09C062)",
+      "confidence": 0.8,
+      "refs": 4,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/performance/2025-09-01.json",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 3,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/performance/2025-09-02.json",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 2,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/performance/2025-09-03.json",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 2,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/performance/equity.csv",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 3,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/performance/stats.json",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 3,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/returns/2025-09-02.csv",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 4,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/returns/2025-09-03.csv",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 4,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/returns/2025-09-04.csv",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 2,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/risk_model/beta.parquet",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 6,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/risk_model/scales.json",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 6,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/targets/2025-09-01.csv",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 9,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/targets/2025-09-02.csv",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 4,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/targets/2025-09-03.csv",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 4,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/targets/smoke_stub.csv",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 2,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/tests/smoke/test_risk_caps.py",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 5,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/tools/apply_universe.py",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 3,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/tools/ats_run.ps1",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 3,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/tools/ats_smoke.ps1",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 4,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/tools/ats.ps1",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 4,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/tools/cleanup-phase1.ps1",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 3,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/tools/diag_universe.ps1",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 2,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/tools/git_autosync.ps1",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 4,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/tools/init-ledger.ps1",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 2,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/tools/orders_fills.py",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 5,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/tools/targets_from_alpha.py",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 4,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/universe/2025-08-22.parquet",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 5,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/universe/2025-08-29.parquet",
+      "action": "QUARANTINE",
+      "reason": "duplicate(hash=85FC6CB0)",
+      "confidence": 0.8,
+      "refs": 6,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    },
+    {
+      "path": "C:/Volodymyr/ATS v2.0/universe/2025-09-01.csv",
+      "action": "KEEP",
+      "reason": "",
+      "confidence": 0.6,
+      "refs": 9,
+      "evidence": [
+        "logs/cleanup/run-20250911-201615/index.json"
+      ]
+    }
+  ],
+  "summary": {
+    "quarantine": 5,
+    "fix": 0,
+    "remove": 0,
+    "keep": 69
+  }
+}

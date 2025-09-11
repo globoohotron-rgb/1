@@ -1,0 +1,520 @@
+[
+  {
+    "path": "C:/Volodymyr/ATS v2.0/ats",
+    "size_kb": 0.0,
+    "mtime": "2025-09-02",
+    "ext": "",
+    "hash": "3C17C82BE435D5BBD2FEC6ADB575B5017FF0032F8F1B947426C86C5982234FDB"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/ats.cmd",
+    "size_kb": 1.0,
+    "mtime": "2025-09-01",
+    "ext": ".cmd",
+    "hash": "6B248B8F6383A051367FF4E0166758F4ED07282699CB2EADEA09F1E5D9ECC3E0"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/ats.ps1",
+    "size_kb": 0.0,
+    "mtime": "2025-09-03",
+    "ext": ".ps1",
+    "hash": "0A54BC865F7A6F7706A85360D80EF4D628D73CFC878EE739EE84CA42B1765CDA"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/MILESTONE_2025-09-01.md",
+    "size_kb": 0.0,
+    "mtime": "2025-09-11",
+    "ext": ".md",
+    "hash": "F952CD4ECB07343F8553CF548702846B2054AAFA63DED0997B4788CCEC4F8B62"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/pyproject.toml",
+    "size_kb": 0.0,
+    "mtime": "2025-08-30",
+    "ext": ".toml",
+    "hash": "EDEB74CD14C325BFA8E0089926EF31D1B5F80769023FA922903C5F84278E8CE9"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/README.md",
+    "size_kb": 0.0,
+    "mtime": "2025-09-11",
+    "ext": ".md",
+    "hash": "1E52B7DA1DB3D8725D0BE6E4359CC4FCC09FF8719784862AD9894601C48C8823"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/RELEASE_NOTES_2025-09-01.md",
+    "size_kb": 1.0,
+    "mtime": "2025-09-01",
+    "ext": ".md",
+    "hash": "D50AC2F7B541387B672112D10B3DA3B4599A2593114896F4336888BFA91BF28F"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/requirements.txt",
+    "size_kb": 0.0,
+    "mtime": "2025-08-30",
+    "ext": ".txt",
+    "hash": "B667CD1C7D9B10539A5944DFA2694680AB030BC28144684278F70DFCD5A78A03"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/scratch.txt",
+    "size_kb": 0.0,
+    "mtime": "2025-09-11",
+    "ext": ".txt",
+    "hash": "CD2ECA3535741F27A8AE40C31B0C41D4057A7A7B912B33B9AED86485D1C84676"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/SPEC_ATS.md",
+    "size_kb": 3.0,
+    "mtime": "2025-09-02",
+    "ext": ".md",
+    "hash": "A2770AD539CF39D24B7171CF7283B123CE145FB401DE6D08C751EDFD397B6F6C"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/STATUS.md",
+    "size_kb": 0.0,
+    "mtime": "2025-09-03",
+    "ext": ".md",
+    "hash": "DFE14EAF6F547688D702736BF09D82B28EDF3E6B3A7F40DB2FB089914A281650"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/.github/workflows/ci.yml",
+    "size_kb": 1.0,
+    "mtime": "2025-08-30",
+    "ext": ".yml",
+    "hash": "79169D06F2149E89FF0D4B1DE4A3E2E78F3243672C4A623A22F557C0C4227983"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/.vscode/settings.json",
+    "size_kb": 1.0,
+    "mtime": "2025-09-11",
+    "ext": ".json",
+    "hash": "73747CBBE5A1201B38118CCC7F98C100F9656B2DE1488B6DA281C1A09FDE1D57"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/alpha/2025-09-01.csv",
+    "size_kb": 0.0,
+    "mtime": "2025-09-01",
+    "ext": ".csv",
+    "hash": "8AA7DE594AAE3145155C921A1F4756CC9A712462059FC1666625C2082D2F1886"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/bin/ats",
+    "size_kb": 1.0,
+    "mtime": "2025-09-03",
+    "ext": "",
+    "hash": "4DA169DB01018EF4292A90E1E3646FF360D20186DF2A33AFBE9736F1E8BDA4F9"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/config/ats.yaml",
+    "size_kb": 0.0,
+    "mtime": "2025-09-03",
+    "ext": ".yaml",
+    "hash": "1C1461F947443CA36C4D61E62F028866A0737D12FCCF290877B9409D57B6A566"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/docs/Acceptance_Matrix.md",
+    "size_kb": 2.0,
+    "mtime": "2025-09-11",
+    "ext": ".md",
+    "hash": "2DD8617852A143FFE4257B81041799B69B6E2CCE7E1E881B962ACFCC9940715D"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/docs/AI_ACCESS_CHECK.md",
+    "size_kb": 3.0,
+    "mtime": "2025-09-11",
+    "ext": ".md",
+    "hash": "407F3D7EAECC72E560DFA86A310CCEEB9275F05E0C2645B541442874E51E9C59"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/docs/cleanup_manifest.json",
+    "size_kb": 19.0,
+    "mtime": "2025-09-11",
+    "ext": ".json",
+    "hash": "75AB93E50142231C6B67F6C7865401F12DABEF4390FBB72EA3D94A111087D964"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/docs/cleanup_report.md",
+    "size_kb": 10.0,
+    "mtime": "2025-09-11",
+    "ext": ".md",
+    "hash": "35AC21C0CDE040F2523E7D8399BAAE08AB79DA510A9DF8B3202B5FBCDFCB1E00"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/docs/CODEMAP.md",
+    "size_kb": 2.0,
+    "mtime": "2025-08-30",
+    "ext": ".md",
+    "hash": "08F6B0EAE59AFDD4D554775B45C8B3E84CEF73912B46C6118911BAAE9669F97F"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/docs/equity.png",
+    "size_kb": 53.0,
+    "mtime": "2025-09-03",
+    "ext": ".png",
+    "hash": "5BC39AD9A475E614F6D3D3BD61AE57058604A23CBE3ED3BCEF6633F05EFA6AEC"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/docs/ledger.md",
+    "size_kb": 2.0,
+    "mtime": "2025-09-11",
+    "ext": ".md",
+    "hash": "FF1A6ADF0AE2A52F9C2B514696D2A73E71D60AD61A6113FE938E14351D118815"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/docs/manifest.json",
+    "size_kb": 6.0,
+    "mtime": "2025-09-11",
+    "ext": ".json",
+    "hash": "C7865C5CDBE71AAF65B4B81B20BEE4858D72C4E25D0A76F09E3B55BF9812B035"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/docs/PLAN_SUMMARY.md",
+    "size_kb": 2.0,
+    "mtime": "2025-09-01",
+    "ext": ".md",
+    "hash": "72546A44B2D14EFBFA5DA363DCEFBFB103254250A167622F67EB68FFBB2B2AB9"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/docs/px.parquet",
+    "size_kb": 19.0,
+    "mtime": "2025-08-30",
+    "ext": ".parquet",
+    "hash": "008D66A4FE02EFDB977587EB430D7BB161B003ED48DC0108503F82B5D7190C31"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/docs/QC_factors_alpha_2025-09-01.md",
+    "size_kb": 0.0,
+    "mtime": "2025-09-01",
+    "ext": ".md",
+    "hash": "F0E0C436B57DCE612AE82A6D401AF9C1951A37158CD527A31EEF62F194CAFBA8"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/docs/QC_risk_portfolio_2025-09-01.md",
+    "size_kb": 0.0,
+    "mtime": "2025-09-01",
+    "ext": ".md",
+    "hash": "8D0BA43BB59ABBA76B7C268AE491A88BCA07AEFEC26E3E469C7691A7BB8BF3C4"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/docs/QC_universe_2025-09-01.md",
+    "size_kb": 0.0,
+    "mtime": "2025-09-01",
+    "ext": ".md",
+    "hash": "6680D9F2363FAA7EE8A761BE797BF37695EC5D0127EBE1D7CD0FE44FD4A274AA"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/docs/REPO_AUDIT_2025-09-01.md",
+    "size_kb": 5.0,
+    "mtime": "2025-09-01",
+    "ext": ".md",
+    "hash": "9B12158B62E23D0958FD59174F453CA8A4A92EBA18AB228CC6DDD1CE9ADC6FDA"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/docs/REPO_STRUCTURE.md",
+    "size_kb": 1.0,
+    "mtime": "2025-09-01",
+    "ext": ".md",
+    "hash": "A38DBEA009F581CDC70C1603844B0B72AF93E6A7BF2C7F85DD8151DA101D6160"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/docs/report_2025-09-02.md",
+    "size_kb": 0.0,
+    "mtime": "2025-09-02",
+    "ext": ".md",
+    "hash": "38E0BDB1691C8E6CC3FA272AD72770C248DCE8C2F18FFFC765050495C6F7118D"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/docs/report_2025-09-03.md",
+    "size_kb": 0.0,
+    "mtime": "2025-09-03",
+    "ext": ".md",
+    "hash": "9E7C2B5642AF0FE1A4FC069F569BF1413B5890A192695768375B77FE0457BF32"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/docs/SYNC_MISSING.md",
+    "size_kb": 1.0,
+    "mtime": "2025-09-01",
+    "ext": ".md",
+    "hash": "0942D6007D378D333BA4D028EDAA7003EF65BFF75074F9CFB87F7DFBC16C401A"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/execution/2025-09-01.csv",
+    "size_kb": 0.0,
+    "mtime": "2025-09-03",
+    "ext": ".csv",
+    "hash": "0FDECF4B80C404EF9B764D197D313FA70966D3DB1E20D07819B69E6F2EEA7EB8"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/execution/2025-09-02.csv",
+    "size_kb": 0.0,
+    "mtime": "2025-09-03",
+    "ext": ".csv",
+    "hash": "0FDECF4B80C404EF9B764D197D313FA70966D3DB1E20D07819B69E6F2EEA7EB8"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/execution/2025-09-03.csv",
+    "size_kb": 0.0,
+    "mtime": "2025-09-03",
+    "ext": ".csv",
+    "hash": "0FDECF4B80C404EF9B764D197D313FA70966D3DB1E20D07819B69E6F2EEA7EB8"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/execution/fills_2025-09-01.csv",
+    "size_kb": 0.0,
+    "mtime": "2025-09-01",
+    "ext": ".csv",
+    "hash": "FC8D712F872620E413C050E7DA6EE822E5399826F0FFA123E72349C0FC674756"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/factors/2025-08-29.parquet",
+    "size_kb": 42.0,
+    "mtime": "2025-08-30",
+    "ext": ".parquet",
+    "hash": "B567B5439F0BF14E67E8D174ADC642F8E14A9A75CE3CD3DF13639E84FDD9D9C9"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/factors/2025-09-01.csv",
+    "size_kb": 0.0,
+    "mtime": "2025-09-01",
+    "ext": ".csv",
+    "hash": "DEFFCF7DBE4639D7439F81693C23A272C480111E92ED5BA6EF18C3B3F1E776D3"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/ops/bootstrap-runner.ps1",
+    "size_kb": 0.0,
+    "mtime": "2025-09-11",
+    "ext": ".ps1",
+    "hash": "B4EC3C7E5ED7EFFF1797D06E9BBE9C54075532783A7361AC8ED98FFD2B6C17B4"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/ops/ensure-run_ingest_safe.ps1",
+    "size_kb": 0.0,
+    "mtime": "2025-09-11",
+    "ext": ".ps1",
+    "hash": "15F814123D633B136C16A0BD647AA5DE9746F786836F25DA48DD9C404D15B318"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/ops/run-safe.ps1",
+    "size_kb": 1.0,
+    "mtime": "2025-09-11",
+    "ext": ".ps1",
+    "hash": "FAC2C1DF36683412E61687C00365AA296AD8F4D975DB2065B229442F5B5CB571"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/orders/2025-09-01.csv",
+    "size_kb": 0.0,
+    "mtime": "2025-09-03",
+    "ext": ".csv",
+    "hash": "CC09C0629BFE0AA82537A8B1A9D5BD4AB020193842B5144D6F8A811E5C6E00B0"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/orders/2025-09-02.csv",
+    "size_kb": 0.0,
+    "mtime": "2025-09-03",
+    "ext": ".csv",
+    "hash": "CC09C0629BFE0AA82537A8B1A9D5BD4AB020193842B5144D6F8A811E5C6E00B0"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/orders/2025-09-03.csv",
+    "size_kb": 0.0,
+    "mtime": "2025-09-03",
+    "ext": ".csv",
+    "hash": "CC09C0629BFE0AA82537A8B1A9D5BD4AB020193842B5144D6F8A811E5C6E00B0"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/performance/2025-09-01.json",
+    "size_kb": 0.0,
+    "mtime": "2025-09-03",
+    "ext": ".json",
+    "hash": "FD5D3D5066B0263A7077D7D58A6DBD34E0DD4283581102B106EF0BBB35C30BE1"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/performance/2025-09-02.json",
+    "size_kb": 0.0,
+    "mtime": "2025-09-03",
+    "ext": ".json",
+    "hash": "2BDF6B29D895143114926EFC79CC137370E804868621CE979ABAE56445E87FB9"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/performance/2025-09-03.json",
+    "size_kb": 0.0,
+    "mtime": "2025-09-03",
+    "ext": ".json",
+    "hash": "C9623B72B2A97BCF0F37F39468BE4E98C729D3DA17AAFF999969CE9670C06BAE"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/performance/equity.csv",
+    "size_kb": 0.0,
+    "mtime": "2025-09-03",
+    "ext": ".csv",
+    "hash": "6AB5FADFD8753553C2CFE38539184FFF571B659A5B2067D1FAC7CAB1E215DCF0"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/performance/stats.json",
+    "size_kb": 0.0,
+    "mtime": "2025-09-03",
+    "ext": ".json",
+    "hash": "A97AE608A6708ECE417C48C068757F159AB7228075518D048C000BC743AFE155"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/returns/2025-09-02.csv",
+    "size_kb": 0.0,
+    "mtime": "2025-09-02",
+    "ext": ".csv",
+    "hash": "E82359E3D42FFDD347C13BB4D054784B501EDBB31CD41AE1D946671260E65367"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/returns/2025-09-03.csv",
+    "size_kb": 0.0,
+    "mtime": "2025-09-02",
+    "ext": ".csv",
+    "hash": "64AF861FA7D585B708E778A68C2845F7693F69B096BEBC3AB8BD5B9BF3552C69"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/returns/2025-09-04.csv",
+    "size_kb": 0.0,
+    "mtime": "2025-09-02",
+    "ext": ".csv",
+    "hash": "F13B2362301DF3EE6120E0957588B92F6F3FC86F01343F2B23DD8F758B204A17"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/risk_model/beta.parquet",
+    "size_kb": 0.0,
+    "mtime": "2025-09-01",
+    "ext": ".parquet",
+    "hash": "BFD95604C3DEDA8755774419A0ED9F5CD88818F282561E22EBF2E383B41EDBFC"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/risk_model/scales.json",
+    "size_kb": 0.0,
+    "mtime": "2025-09-01",
+    "ext": ".json",
+    "hash": "B071C425D844080EBC664935E0C91577C911CDECD1D19E2C4ED7B8715DA3CA09"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/targets/2025-09-01.csv",
+    "size_kb": 0.0,
+    "mtime": "2025-09-03",
+    "ext": ".csv",
+    "hash": "39BE1E0B3F97427F885D459508FEC8A0F59184F97DEFE75F42D208CE01B4991A"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/targets/2025-09-02.csv",
+    "size_kb": 0.0,
+    "mtime": "2025-09-03",
+    "ext": ".csv",
+    "hash": "D56E338DEF01F9BF534CDFF9FB1AE0B58E3DCD4B179CEFCB1E2CFE2597C2FF2E"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/targets/2025-09-03.csv",
+    "size_kb": 0.0,
+    "mtime": "2025-09-03",
+    "ext": ".csv",
+    "hash": "2CD2BBD149D9CF9B6E6E671567554D0B6C73523FBAE918380E9EB6F5603080CF"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/targets/smoke_stub.csv",
+    "size_kb": 0.0,
+    "mtime": "2025-09-03",
+    "ext": ".csv",
+    "hash": "D9D68732CE3238749E0B5D610BAA6A4C72A04EDD2311845247E7A1ED6BFB94D7"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/tests/smoke/test_risk_caps.py",
+    "size_kb": 7.0,
+    "mtime": "2025-09-03",
+    "ext": ".py",
+    "hash": "D0D06697D7F408BB88B3E609A1C1D75072EDB3E01819DE6FD8FC31BBCAE9F0A4"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/tools/apply_universe.py",
+    "size_kb": 5.0,
+    "mtime": "2025-09-03",
+    "ext": ".py",
+    "hash": "40D267FFBF0AB7B63333CB309C46B75F2830349F08DE1FC3A2158CC483074B33"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/tools/ats_run.ps1",
+    "size_kb": 2.0,
+    "mtime": "2025-09-11",
+    "ext": ".ps1",
+    "hash": "B6F500FA5F1BF379287B9F80A07FE00ADE9EEFB69C4303F44B4F4712C197493B"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/tools/ats_smoke.ps1",
+    "size_kb": 3.0,
+    "mtime": "2025-09-11",
+    "ext": ".ps1",
+    "hash": "6ED0B1EF01B470B02DB385A49C34B989D3432B46DE9A337CB5E11B7F176EF2F0"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/tools/ats.ps1",
+    "size_kb": 1.0,
+    "mtime": "2025-09-01",
+    "ext": ".ps1",
+    "hash": "EE429B67282F533FDC65E321751ECD1C6B6FF6E6CA7825ECC3DEB1D57E6117BE"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/tools/cleanup-phase1.ps1",
+    "size_kb": 9.0,
+    "mtime": "2025-09-11",
+    "ext": ".ps1",
+    "hash": "7D34CF9D75276AE45506E28232A29DACB38C8305A78EF80ADD1D62EEED6072B0"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/tools/diag_universe.ps1",
+    "size_kb": 3.0,
+    "mtime": "2025-09-03",
+    "ext": ".ps1",
+    "hash": "E676EFF5087A87D998CAC51D4597095971B0CD73F8B187DEC0DD1137A6224B4C"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/tools/git_autosync.ps1",
+    "size_kb": 1.0,
+    "mtime": "2025-09-01",
+    "ext": ".ps1",
+    "hash": "557665599E6DEE55B1C7611B34DC63BD7BB7C483877F2EAE8886B05D7E058E7A"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/tools/init-ledger.ps1",
+    "size_kb": 6.0,
+    "mtime": "2025-09-11",
+    "ext": ".ps1",
+    "hash": "FB63E8A8223E1EF8881832F006AB9A3AB20171AC842A986A9D62FD19BD7015A5"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/tools/orders_fills.py",
+    "size_kb": 1.0,
+    "mtime": "2025-09-01",
+    "ext": ".py",
+    "hash": "C3A80B9E02E58AA9A4A1688CCF5AF378A289F29147B541B017DEBC784FC4668F"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/tools/targets_from_alpha.py",
+    "size_kb": 3.0,
+    "mtime": "2025-09-01",
+    "ext": ".py",
+    "hash": "BEA37B99782A2601FADF0D4409515FC523CBFEACF90D09EF93A46964C5B29D5C"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/universe/2025-08-22.parquet",
+    "size_kb": 6.0,
+    "mtime": "2025-08-30",
+    "ext": ".parquet",
+    "hash": "85FC6CB039F60E2BE5B28B8A045A2EF5100E39CD371805F1E3B322A5349A4738"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/universe/2025-08-29.parquet",
+    "size_kb": 6.0,
+    "mtime": "2025-08-30",
+    "ext": ".parquet",
+    "hash": "85FC6CB039F60E2BE5B28B8A045A2EF5100E39CD371805F1E3B322A5349A4738"
+  },
+  {
+    "path": "C:/Volodymyr/ATS v2.0/universe/2025-09-01.csv",
+    "size_kb": 0.0,
+    "mtime": "2025-09-01",
+    "ext": ".csv",
+    "hash": "222D73B77DBFAA7B8A76023EDD4B23DB553C8B0F02401D8B9D5E08FE93D17EA1"
+  }
+]
