@@ -1,8 +1,8 @@
 {
-  "updated_at": "2025-09-11T18:16:15Z",
+  "updated_at": "2025-09-11T18:16:40Z",
   "policy": {
-    "stale_months": 12,
-    "large_file_mb": 25
+    "large_file_mb": 25,
+    "stale_months": 12
   },
   "decisions": [
     {
@@ -12,7 +12,7 @@
       "confidence": 0.6,
       "refs": 14,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -22,7 +22,7 @@
       "confidence": 0.6,
       "refs": 3,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -32,7 +32,7 @@
       "confidence": 0.6,
       "refs": 4,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -42,7 +42,7 @@
       "confidence": 0.6,
       "refs": 3,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -52,7 +52,7 @@
       "confidence": 0.6,
       "refs": 5,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -62,7 +62,7 @@
       "confidence": 0.6,
       "refs": 5,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -72,7 +72,7 @@
       "confidence": 0.6,
       "refs": 2,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -82,7 +82,7 @@
       "confidence": 0.6,
       "refs": 7,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -92,7 +92,7 @@
       "confidence": 0.6,
       "refs": 2,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -102,7 +102,7 @@
       "confidence": 0.6,
       "refs": 3,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -112,7 +112,7 @@
       "confidence": 0.6,
       "refs": 5,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -122,7 +122,7 @@
       "confidence": 0.6,
       "refs": 5,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -132,7 +132,7 @@
       "confidence": 0.6,
       "refs": 2,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -142,7 +142,7 @@
       "confidence": 0.6,
       "refs": 9,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -152,7 +152,7 @@
       "confidence": 0.6,
       "refs": 14,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -162,7 +162,7 @@
       "confidence": 0.6,
       "refs": 5,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -172,7 +172,7 @@
       "confidence": 0.6,
       "refs": 4,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -182,7 +182,7 @@
       "confidence": 0.6,
       "refs": 3,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -192,7 +192,7 @@
       "confidence": 0.6,
       "refs": 3,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -202,7 +202,7 @@
       "confidence": 0.6,
       "refs": 3,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -212,7 +212,7 @@
       "confidence": 0.6,
       "refs": 4,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -222,7 +222,7 @@
       "confidence": 0.6,
       "refs": 6,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -232,7 +232,7 @@
       "confidence": 0.6,
       "refs": 5,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -242,7 +242,7 @@
       "confidence": 0.6,
       "refs": 5,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -252,7 +252,7 @@
       "confidence": 0.6,
       "refs": 3,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -262,7 +262,7 @@
       "confidence": 0.6,
       "refs": 6,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -272,7 +272,7 @@
       "confidence": 0.6,
       "refs": 4,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -282,7 +282,7 @@
       "confidence": 0.6,
       "refs": 3,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -292,7 +292,7 @@
       "confidence": 0.6,
       "refs": 4,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -302,7 +302,7 @@
       "confidence": 0.6,
       "refs": 3,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -312,7 +312,7 @@
       "confidence": 0.6,
       "refs": 4,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -322,7 +322,7 @@
       "confidence": 0.6,
       "refs": 2,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -332,7 +332,7 @@
       "confidence": 0.6,
       "refs": 2,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -342,7 +342,7 @@
       "confidence": 0.6,
       "refs": 4,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -352,7 +352,7 @@
       "confidence": 0.6,
       "refs": 9,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -362,7 +362,7 @@
       "confidence": 0.8,
       "refs": 4,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -372,7 +372,7 @@
       "confidence": 0.8,
       "refs": 4,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -382,7 +382,7 @@
       "confidence": 0.6,
       "refs": 6,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -392,7 +392,7 @@
       "confidence": 0.6,
       "refs": 6,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -402,7 +402,7 @@
       "confidence": 0.6,
       "refs": 9,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -412,7 +412,7 @@
       "confidence": 0.6,
       "refs": 3,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -422,7 +422,7 @@
       "confidence": 0.6,
       "refs": 3,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -432,7 +432,7 @@
       "confidence": 0.6,
       "refs": 2,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -442,7 +442,7 @@
       "confidence": 0.6,
       "refs": 9,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -452,7 +452,7 @@
       "confidence": 0.8,
       "refs": 4,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -462,7 +462,7 @@
       "confidence": 0.8,
       "refs": 4,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -472,7 +472,7 @@
       "confidence": 0.6,
       "refs": 3,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -482,7 +482,7 @@
       "confidence": 0.6,
       "refs": 2,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -492,7 +492,7 @@
       "confidence": 0.6,
       "refs": 2,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -502,7 +502,7 @@
       "confidence": 0.6,
       "refs": 3,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -512,7 +512,7 @@
       "confidence": 0.6,
       "refs": 3,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -522,7 +522,7 @@
       "confidence": 0.6,
       "refs": 4,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -532,7 +532,7 @@
       "confidence": 0.6,
       "refs": 4,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -542,7 +542,7 @@
       "confidence": 0.6,
       "refs": 2,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -552,7 +552,7 @@
       "confidence": 0.6,
       "refs": 6,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -562,7 +562,7 @@
       "confidence": 0.6,
       "refs": 6,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -572,7 +572,7 @@
       "confidence": 0.6,
       "refs": 9,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -582,7 +582,7 @@
       "confidence": 0.6,
       "refs": 4,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -592,7 +592,7 @@
       "confidence": 0.6,
       "refs": 4,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -602,7 +602,7 @@
       "confidence": 0.6,
       "refs": 2,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -612,7 +612,7 @@
       "confidence": 0.6,
       "refs": 5,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -622,7 +622,7 @@
       "confidence": 0.6,
       "refs": 3,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -632,7 +632,7 @@
       "confidence": 0.6,
       "refs": 3,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -642,7 +642,7 @@
       "confidence": 0.6,
       "refs": 4,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -652,7 +652,7 @@
       "confidence": 0.6,
       "refs": 4,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -662,7 +662,7 @@
       "confidence": 0.6,
       "refs": 3,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -672,7 +672,7 @@
       "confidence": 0.6,
       "refs": 2,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -682,7 +682,7 @@
       "confidence": 0.6,
       "refs": 4,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -692,7 +692,7 @@
       "confidence": 0.6,
       "refs": 2,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -702,7 +702,7 @@
       "confidence": 0.6,
       "refs": 5,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -712,7 +712,7 @@
       "confidence": 0.6,
       "refs": 4,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -722,7 +722,7 @@
       "confidence": 0.6,
       "refs": 5,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -732,7 +732,7 @@
       "confidence": 0.8,
       "refs": 6,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     },
     {
@@ -742,14 +742,14 @@
       "confidence": 0.6,
       "refs": 9,
       "evidence": [
-        "logs/cleanup/run-20250911-201615/index.json"
+        "logs/cleanup/run-20250911-201640/index.json"
       ]
     }
   ],
   "summary": {
-    "quarantine": 5,
     "fix": 0,
-    "remove": 0,
-    "keep": 69
+    "quarantine": 5,
+    "keep": 69,
+    "remove": 0
   }
 }
