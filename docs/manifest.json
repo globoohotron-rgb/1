@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "updated_at": "2025-09-11T17:23:19Z",
+  "updated_at": "2025-09-11T18:30:02Z",
   "north_star": {
     "persona": "трейдер-користувач системи",
     "value": "економить час, виконуючи рутину трейдера замість користувача",
@@ -10,37 +10,60 @@
   },
   "sections": {
     "Universe": {
-      "state": "in-progress",
+      "state": "in_progress",
       "owner": "",
       "artifacts": [
+        "C:/Volodymyr/ATS v2.0/universe/2025-08-22.parquet",
+        "C:/Volodymyr/ATS v2.0/universe/2025-08-29.parquet",
+        "C:/Volodymyr/ATS v2.0/universe/2025-09-01.csv",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/universe/2025-08-22.parquet",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/universe/2025-08-29.parquet",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/universe/2025-09-01.csv"
       ],
-      "acceptance_criteria": [],
+      "acceptance_criteria": [
+        "Конфігурований список інструментів",
+        "Файл/папка universe* присутня"
+      ],
       "evidence": [
+        "C:/Volodymyr/ATS v2.0/logs/audit/20250911-203002/python-no-pytest.txt",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/universe/2025-08-22.parquet",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/universe/2025-08-29.parquet",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/universe/2025-09-01.csv"
       ],
-      "notes": ""
+      "notes": "",
+      "ac_inferred": true,
+      "metrics": {
+        "tests_passed": 0,
+        "artifacts_count": 3,
+        "tests_total": 0
+      }
     },
     "Infrastructure": {
-      "state": "unverified",
+      "state": "missing",
       "owner": "",
-      "artifacts": [],
+      "artifacts": null,
       "acceptance_criteria": [
         "IaC у репо; reproducible локальний запуск",
         "CI лінтує/тестує на push",
         "Secrets поза кодом (env/manager)"
       ],
-      "evidence": [],
-      "notes": ""
+      "evidence": "C:/Volodymyr/ATS v2.0/logs/audit/20250911-203002/python-no-pytest.txt",
+      "notes": "",
+      "ac_inferred": false,
+      "metrics": {
+        "tests_passed": 0,
+        "artifacts_count": 0,
+        "tests_total": 0
+      }
     },
     "Execution": {
-      "state": "in-progress",
+      "state": "in_progress",
       "owner": "",
       "artifacts": [
+        "C:/Volodymyr/ATS v2.0/execution/2025-09-01.csv",
+        "C:/Volodymyr/ATS v2.0/execution/2025-09-02.csv",
+        "C:/Volodymyr/ATS v2.0/execution/2025-09-03.csv",
+        "C:/Volodymyr/ATS v2.0/execution/fills_2025-09-01.csv",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/execution/2025-09-01.csv",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/execution/2025-09-02.csv",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/execution/2025-09-03.csv",
@@ -56,89 +79,173 @@
         "Timeouts/retries з backoff"
       ],
       "evidence": [
+        "C:/Volodymyr/ATS v2.0/logs/audit/20250911-203002/python-no-pytest.txt",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/execution/2025-09-01.csv",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/execution/2025-09-02.csv",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/execution/2025-09-03.csv",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/execution/fills_2025-09-01.csv",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/orders/2025-09-01.csv"
       ],
-      "notes": ""
+      "notes": "",
+      "ac_inferred": false,
+      "metrics": {
+        "tests_passed": 0,
+        "artifacts_count": 4,
+        "tests_total": 0
+      }
     },
     "Factors": {
-      "state": "in-progress",
+      "state": "in_progress",
       "owner": "",
       "artifacts": [
+        "C:/Volodymyr/ATS v2.0/factors/2025-08-29.parquet",
+        "C:/Volodymyr/ATS v2.0/factors/2025-09-01.csv",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/factors/2025-08-29.parquet",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/factors/2025-09-01.csv"
       ],
-      "acceptance_criteria": [],
+      "acceptance_criteria": [
+        "≥3 фактори реалізовані",
+        "Є приклади/тести факторів"
+      ],
       "evidence": [
+        "C:/Volodymyr/ATS v2.0/logs/audit/20250911-203002/python-no-pytest.txt",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/factors/2025-08-29.parquet",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/factors/2025-09-01.csv"
       ],
-      "notes": ""
+      "notes": "",
+      "ac_inferred": true,
+      "metrics": {
+        "tests_passed": 0,
+        "artifacts_count": 2,
+        "tests_total": 0
+      }
     },
     "Monitoring": {
-      "state": "unverified",
+      "state": "missing",
       "owner": "",
-      "artifacts": [],
-      "acceptance_criteria": [],
-      "evidence": [],
-      "notes": ""
+      "artifacts": null,
+      "acceptance_criteria": [
+        "Структурні логи",
+        "Алерт на фейли"
+      ],
+      "evidence": "C:/Volodymyr/ATS v2.0/logs/audit/20250911-203002/python-no-pytest.txt",
+      "notes": "",
+      "ac_inferred": true,
+      "metrics": {
+        "tests_passed": 0,
+        "artifacts_count": 0,
+        "tests_total": 0
+      }
     },
     "RiskModel": {
-      "state": "in-progress",
+      "state": "in_progress",
       "owner": "",
       "artifacts": [
+        "C:/Volodymyr/ATS v2.0/docs/QC_risk_portfolio_2025-09-01.md",
+        "C:/Volodymyr/ATS v2.0/risk_model/beta.parquet",
+        "C:/Volodymyr/ATS v2.0/risk_model/scales.json",
+        "C:/Volodymyr/ATS v2.0/tests/smoke/test_risk_caps.py",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/risk_model/beta.parquet",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/risk_model/scales.json"
       ],
-      "acceptance_criteria": [],
+      "acceptance_criteria": [
+        "Розмір позиції",
+        "SL/TP",
+        "Ліміти ризику"
+      ],
       "evidence": [
+        "C:/Volodymyr/ATS v2.0/logs/audit/20250911-203002/python-no-pytest.txt",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/risk_model/beta.parquet",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/risk_model/scales.json"
       ],
-      "notes": ""
+      "notes": "",
+      "ac_inferred": true,
+      "metrics": {
+        "tests_passed": 0,
+        "artifacts_count": 4,
+        "tests_total": 0
+      }
     },
     "Data": {
-      "state": "unverified",
+      "state": "missing",
       "owner": "",
-      "artifacts": [],
-      "acceptance_criteria": [],
-      "evidence": [],
-      "notes": ""
+      "artifacts": null,
+      "acceptance_criteria": [
+        "Завантаження/очистка даних працює локально",
+        "Є схеми/формати джерел",
+        "Є базові тести для loader"
+      ],
+      "evidence": "C:/Volodymyr/ATS v2.0/logs/audit/20250911-203002/python-no-pytest.txt",
+      "notes": "",
+      "ac_inferred": true,
+      "metrics": {
+        "tests_passed": 0,
+        "artifacts_count": 0,
+        "tests_total": 0
+      }
     },
     "PipelinesQA": {
-      "state": "in-progress",
+      "state": "in_progress",
       "owner": "",
       "artifacts": [
+        "C:/Volodymyr/ATS v2.0/.github/workflows/ci.yml",
+        "C:/Volodymyr/ATS v2.0/tests/smoke/test_risk_caps.py",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/.github/workflows/ci.yml",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/tests/smoke/test_risk_caps.py"
       ],
-      "acceptance_criteria": [],
+      "acceptance_criteria": [
+        "CI лінт/тест на push",
+        "Смоук-тести/перевірка пайплайну"
+      ],
       "evidence": [
+        "C:/Volodymyr/ATS v2.0/logs/audit/20250911-203002/python-no-pytest.txt",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/.github/workflows/ci.yml",
         "C:/Volodymyr/ls_universe/ls_universe v2.0/tests/smoke/test_risk_caps.py"
       ],
-      "notes": ""
+      "notes": "",
+      "ac_inferred": true,
+      "metrics": {
+        "tests_passed": 0,
+        "artifacts_count": 2,
+        "tests_total": 0
+      }
     },
     "Alpha": {
-      "state": "in-progress",
+      "state": "in_progress",
       "owner": "",
-      "artifacts": "C:/Volodymyr/ls_universe/ls_universe v2.0/alpha/2025-09-01.csv",
-      "acceptance_criteria": [],
-      "evidence": [
-        "C"
+      "artifacts": "C:/Volodymyr/ls_universe/ls_universe v2.0/alpha/2025-09-01.csvC:/Volodymyr/ATS v2.0/alpha/2025-09-01.csv",
+      "acceptance_criteria": [
+        "Є комбінатор альф",
+        "Є скрипт бектесту"
       ],
-      "notes": ""
+      "evidence": [
+        "C",
+        "C:/Volodymyr/ATS v2.0/logs/audit/20250911-203002/python-no-pytest.txt"
+      ],
+      "notes": "",
+      "ac_inferred": true,
+      "metrics": {
+        "tests_passed": 0,
+        "artifacts_count": 1,
+        "tests_total": 0
+      }
     },
     "Portfolio": {
-      "state": "unverified",
+      "state": "missing",
       "owner": "",
-      "artifacts": [],
-      "acceptance_criteria": [],
-      "evidence": [],
-      "notes": ""
+      "artifacts": null,
+      "acceptance_criteria": [
+        "Алокація портфеля",
+        "Оптимізатор/правила"
+      ],
+      "evidence": "C:/Volodymyr/ATS v2.0/logs/audit/20250911-203002/python-no-pytest.txt",
+      "notes": "",
+      "ac_inferred": true,
+      "metrics": {
+        "tests_passed": 0,
+        "artifacts_count": 0,
+        "tests_total": 0
+      }
     }
   },
   "dod_mvp": [
