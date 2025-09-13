@@ -1,0 +1,21 @@
+name: sanity
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  validate-plan-and-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Validate plan.md table shape
+      run: |
+        awk -F'\\|' 'BEGIN{bad=0} /^\|/ && !/^\|\-+/ { if (NF!=13) {print "bad row:", NR; bad=1} } END{exit bad}' docs/log/plan.md
+    - name: Check data artifacts for MS2
+      run: |
+        test -f data/ohlcv.parquet
+        test -f data/qc_report.json
+        test -f data/acceptance.json
+        test -f eval/smoke_data_60d.log
