@@ -1,0 +1,18 @@
+{
+  "tickers_total": 10,
+  "tickers_present": 10,
+  "rows": 600,
+  "date_min": "2025-06-18T00:00:00+00:00",
+  "date_max": "2025-09-12T00:00:00+00:00",
+  "null_counts": {
+    "date": 0,
+    "Open": 0,
+    "High": 0,
+    "Low": 0,
+    "Close": 0,
+    "AdjClose": 0,
+    "Volume": 0,
+    "ticker": 0
+  },
+  "dupes": 0
+}

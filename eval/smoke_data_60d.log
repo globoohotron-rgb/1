@@ -1,0 +1,5 @@
+SMOKE DATA 60D @ 2025-09-13T11:49:59.725517Z
+tickers_total=10 present=10 rows=600
+window=[2025-06-18T00:00:00+00:00 .. 2025-09-12T00:00:00+00:00]
+acceptance: valid_tickers_ratio_ok=True no_duplicates_ok=True tz_utc_ok=True
+ERRORS=0
