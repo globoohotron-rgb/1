@@ -14,11 +14,11 @@
 |  | TASK | INF | INF-04 | CI/CD (lint, tests, smoke) | INF-03 | .github/workflows/ci.yml | jobs зелені; smoke артефакти | todo |  |  |
 |  | TASK | INF | INF-05 | Make/CLI таргети | INF-02 | Makefile | `make help` повний; таргети проходять | todo |  |  |
 |  | TASK | INF | INF-06 | Секрети і доступи | INF-01 | .env.template, ADR | секретів у git немає; onboarding <15 хв | todo |  |  |
-|  | TASK | DATA | DATA-01 | Інгест OHLCV/AdjClose (UTC) | INF-05 | data/ohlcv.parquet | фільтри ок; TZ=UTC | todo |  |  |
-|  | TASK | DATA | DATA-02 | QC-звіт даних | DATA-01 | data/qc_report.json, plots | пороги спрацювань задані | todo |  |  |
-|  | TASK | DATA | DATA-03 | Acceptance даних | DATA-02 | data/acceptance.json | ≥95% валідних; дублікати=0 | todo |  |  |
+| 2025-09-13T12:40:00Z | TASK | DATA | DATA-01 | Інгест OHLCV/AdjClose (UTC) | INF-05 | data/ohlcv.parquet | фільтри ок; TZ=UTC | done | data/ohlcv.parquet |  |
+| 2025-09-13T12:40:00Z | TASK | DATA | DATA-02 | QC-звіт даних | DATA-01 | data/qc_report.json, plots | пороги спрацювань задані | done | data/qc_report.json |  |
+| 2025-09-13T12:40:00Z | TASK | DATA | DATA-03 | Acceptance даних | DATA-02 | data/acceptance.json | ≥95% валідних; дублікати=0 | done | data/acceptance.json |  |
 |  | TASK | DATA | DATA-04 | Маніфест сетів | DATA-01 | data/manifest.json | датовані джерела/хеші | todo |  |  |
-|  | TASK | DATA | DATA-05 | Smoke ingest 60d | DATA-03, DATA-04 | eval/smoke_data_60d.log | 0 ERROR; пороги не порушені | todo |  |  |
+| 2025-09-13T12:40:00Z | TASK | DATA | DATA-05 | Smoke ingest 60d | DATA-03, DATA-04 | eval/smoke_data_60d.log | 0 ERROR; пороги не порушені | done | eval/smoke_data_60d.log |  |
 |  | TASK | UNI | UNI-01 | Логіка universe + фільтри | DATA-05 | src/universe/build.py | параметри з конфіга; детермінований | todo |  |  |
 |  | TASK | UNI | UNI-02 | Збереження universe по датах | UNI-01 | universe/DATE.parquet | будується для будь-якої дати | todo |  |  |
 |  | TASK | UNI | UNI-03 | Контролі N і churn | UNI-02 | universe/qc_universe.json | N∈[500,1500], churn≤15% d/d | todo |  |  |
