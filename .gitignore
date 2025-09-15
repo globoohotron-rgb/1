@@ -1,0 +1,44 @@
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+.python-version
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+coverage/
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Build / Dist
+build/
+dist/
+
+# Logs / Caches
+*.log
+.cache/
+
+# Data artifacts (keep code in src/, keep data out of VCS)
+data/
+datasets/
+**/*.parquet
+**/*.feather
+
+# Env files / keys (never commit secrets)
+.env
+.env.*
+secrets/
+*.key
+*.pem
