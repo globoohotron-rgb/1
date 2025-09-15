@@ -8,10 +8,10 @@
 |  | MILESTONE | Global | MS4 | Backtest 3–5y reproducible | PIPE-08 |  | доки+скрипти відтворні | todo |  |  |
 |  | MILESTONE | Global | MS5 | MVP + Telegram signals | SIG-04, MON-05, PIPE-10 |  | сигнали доставляються | todo |  |  |
 |  | MILESTONE | Global | MS6 | Paper/live readiness | LIVE-05 |  | пройдені go-live гейти | todo |  |  |
-|  | TASK | INF | INF-01 | Каркас репозиторію | — | src/*, notebooks, docs/adr, eval | структура + README-мапа | todo |  |  |
+|  | TASK | INF | INF-01 | Каркас репозиторію | — | src/*, notebooks, docs/adr, eval | структура + README-мапа | done |  |  |
 |  | TASK | INF | INF-02 | Єдиний конфіг defaults | INF-01 | config/defaults | усі модулі читають один loader | todo |  |  |
 |  | TASK | INF | INF-03 | pre-commit (lint/format/type) | INF-01 | .pre-commit, конфіги | pre-commit ok; CI блокує без формату | todo |  |  |
-|  | TASK | INF | INF-04 | CI/CD (lint, tests, smoke) | INF-03 | .github/workflows/ci.yml | jobs зелені; smoke артефакти | todo |  |  |
+|  | TASK | INF | INF-04 | CI/CD (lint, tests, smoke) | INF-03 | .github/workflows/ci.yml | jobs зелені; smoke артефакти | in_progress |  |  |
 |  | TASK | INF | INF-05 | Make/CLI таргети | INF-02 | Makefile | `make help` повний; таргети проходять | todo |  |  |
 |  | TASK | INF | INF-06 | Секрети і доступи | INF-01 | .env.template, ADR | секретів у git немає; onboarding <15 хв | todo |  |  |
 | 2025-09-13T12:40:00Z | TASK | DATA | DATA-01 | Інгест OHLCV/AdjClose (UTC) | INF-05 | data/ohlcv.parquet | фільтри ок; TZ=UTC | done | data/ohlcv.parquet |  |
